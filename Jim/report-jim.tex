@@ -13,10 +13,10 @@
 
 \graphicspath{ {diagrams/} }
 
-\title{\vspace{1cm}6G6Z1705\\\textbf{Artificial Intelligence}\\\vspace{2cm}Scenario 2\\\vspace{2cm}}
+\title{\vspace{2cm}6G6Z1705\\\textbf{Artificial Intelligence}\\\vspace{2cm}Scenario 2\\\vspace{2cm}}
 \author{14032908\\Joshua Michael Ephraim Bridge\\joshua.m.bridge@stu.mmu.ac.uk\\\vspace{1cm}}
 
-\pagestyle{headings}
+% \pagestyle{headings}
 
 \begin{document}
 
@@ -27,13 +27,21 @@
 \doublespacing
 
 \section{Introduction}
+  In this report an AI classifier will be put forward which maps mamographical data to desired outputs (diagnoses). In order to do this two types of AI classifiers will be evaluated on their performance in this task, along with relevant pre-processing of the attributes to enhance classifier performance. The two classifier types will be a Decision Tree (J.48) and an Artificial Neural Network (Multilayer Perceptron, \cite{minsky2017perceptrons}). In order to evaluate their performance, considerations of both learning time \& classification accuracy will be taken into account.
 
 \section{AI classifiers}
-  % • A brief description / introduction to decision trees
+  In this section a brief study will be conducted into the two classifier types mentioned previously.
+
+  \subsection{Decision Trees}
+    A Decision Tree is a hierarchical variant of a multistage classifier \citep{safavian1991survey}. The tree structure itelf could be described as a single root node with 0 to many connected children, each themselves with 0 to many connected children. Any node in a decision tree with no children is known as a leaf node and will have a direct relationship with two or more class labels.
+    % https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4466856/
+    % https://medium.com/@mohtedibf/indepth-parameter-tuning-for-decision-tree-6753118a03c3
 
   % • A detailed description of decision tree parameters (individual research required) and how they might affect the performance of the classifier
 
+  \subsection{Artificial Neural Networks}
   % • A brief description / introduction to artificial neural networks
+  Multilayer Perceptron \citep{minsky2017perceptrons}.
 
   % • A detailed description of artificial neural network parameters (individual research required) and how they might affect the performance of the classifier
 
@@ -75,6 +83,7 @@
 \section{Advanced Pre-processing}
   % • Experiments with different methods of pre-processing the data (scaling, grouping, conversion etc.). This work could contribute marks for work reaching the 86%+ mark band). The section may be omitted if you do not anticipate reaching such a mark.
 
+% http://yatani.jp/HCIstats/PCA
 \section{Conclusions}
   % • A description of the best (pruned) decision tree for the dataset (including number of nodes, leaves, pruning parameters etc.).
 
