@@ -33,17 +33,61 @@
   In this section a brief study will be conducted into the two classifier types mentioned previously.
 
   \subsection{Decision Trees}
-    A Decision Tree is a hierarchical variant of a multistage classifier \citep{safavian1991survey}. The tree structure itelf could be described as a single root node with 0 to many connected children, each themselves with 0 to many connected children. Any node in a decision tree with no children is known as a leaf node and will have a direct relationship with two or more class labels.
+    A decision tree is a type of classifier (specifically a hierarchical variant of a multistage classifier, as defined by \cite{safavian1991survey}) which uses a tree-like structure to test values on different attributes in a format similar to a flow chart. The tree structure itself could be described as a single root node with 0 to many connected children, each themselves with 0 to many connected children. Any node in a decision tree with no children is known as a leaf node and has a direct relationship with a class label. At each node in the tree a test is carried out on an attribute and the result of that test decides on which of the child nodes the process should continue onto. The process of completing each test from the root node to a leaf node should result in a classification of the data provided.
+
+    Self-learning decision trees are often very useful because they explicitly define how the instances are classified within the tree, simplifying the process into a set of simple rules. This is different to ANN's (see section \ref{ann}) where the classification process is mostly hidden and can often be a very complex set of rules which would be very hard to follow.
+
+    \subsubsection{C4.5 Decision tree}
+      There are several parameters within the C4.5 algorithm that will affect the classification performance on a dataset.
+
+      % \paragraph{ID3}
+      % \begin{equation} \label{eq:entropy}
+      %   H(X) = -\sum p(X)\log p(X)
+      % \end{equation}
+      %
+      %
+      % \begin{equation} \label{eq:informationgain}
+      %   I(X,Y)= H(X)-H(X|Y)
+      % \end{equation}
+
+      \paragraph{Confidence}
+        The confidence parameter is a way of controlling the amount of error-based pruning \citep{quinlan1987simplifying} within the decision tree. More specifically, post-pruning is the process of estimating the error rate (probability of mis-classification) at each node in the tree, and deciding whether or not to remove the node. Lower values of the confidence factor will result in the post-pruning becoming much more aggressive with removing nodes \citep{beck2008backward}.
+
+      \paragraph{Minimum number of objects}
+        Within weka the Minimum number of objects parameter controls the Minimum number of instances per leaf. This means that each leaf within the tree must have at least the specified amount of classified instances for it not to be pruned. This parameter is good for data-sets which are particularly noisy which could introduce some leaf nodes which are not very stable classifiers. With a higher minimum number of objects, the tree will likely become much more pruned.
+
     % https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4466856/
     % https://medium.com/@mohtedibf/indepth-parameter-tuning-for-decision-tree-6753118a03c3
 
   % • A detailed description of decision tree parameters (individual research required) and how they might affect the performance of the classifier
 
-  \subsection{Artificial Neural Networks}
-  % • A brief description / introduction to artificial neural networks
-  Multilayer Perceptron \citep{minsky2017perceptrons}.
+  \subsection{Artificial Neural Networks} \label{ann}
+    An Artificial Neural Network is a mathematical system which is able to classify data by performing a series of mathematical functions (activation functions) which take weightings for each of their inputs and summise them into a single output. ANN's are designed in light of the way human/animal brains process information, via a series of neurons which are connected (in biology these connections are called synapses). Within an ANN each neuron is connected to either input attributes or the output of neruron(s) in another layer of the network. The connections between the neurons contain weightings which is the main principal behind how the network can emphasise some data over others.
 
-  % • A detailed description of artificial neural network parameters (individual research required) and how they might affect the performance of the classifier
+    The neurons within an ANN can be split up into a series of ‘layers’, where the outputs from one layer of neurons will become the inputs for the next layer of neurons. Within a Multilayer Perceptron (see section \ref{mlp}) the layers consist of 1 input layer, 1 output layer, and at least 1 ‘hidden layer’ where each neuron in the hidden layer(s) and the output layer are neurons which perform an activation function.
+
+    Within an ANN there must be a process of ‘learning’ which enables it to find the most optimal values for the weights which are used in the activation functions. This is done via backpropagation which enables the algorithm to modify the weights based on the error rate of the output, compared to the expected output.
+
+    % Learning occurs in the perceptron by changing connection weights after each piece of data is processed, based on the amount of error in the output compared to the expected result. This is an example of supervised learning, and is carried out through backpropagation, a generalization of the least mean squares algorithm in the linear perceptron.
+
+      \subsubsection{Multilayer Perceptron} \label{mlp}
+        \citep{minsky2017perceptrons}
+        \paragraph{Hidden Layers}
+          The hidden layers parameter allows the user to define the strcuture of the network they would like to train. Introducing more layers \& neurons introduces more complexity which is good for more complex datasets with attributes which are not lineraly seperable, however for simpler datasets this may introduce unwanted complexity within the network. What hidden layers are and how they relate to the ANN is explained in more deatail in section \ref{ann}.
+
+        \paragraph{Learning Rate}
+          Learning rate applies to the backpropagation algorithm and more specifically the Gradient Descent. It concerns the speed at which the minimum squared error is reached. A low learning rate would mean that many updates (a high training time) would be needed in order to find the global minimum - which is not desirable. If the learning rate is too high however, then this can lead to divergent behaviour where the backpropagation algorithm is not able to correctly settle on an optimal minimum.
+
+          % This algorithm aims at learning the weights of a multilayer ANN with a fixed number of units and interconnections, by using gradient descent in order to minimize the squared error between the network outputs and the correspondent target values.
+
+          % The backpropagation algorithm can be viewed as a searching algorithm whose state space corresponds to all possible weights for the network units. The algorithm uses the squared error between the network outputs and the target values as a fitness function to guide the gradient descend. The correspondent error surface can thus be considered multidimensional and may have multiple local minima. This characteristic guarantees only that the gradient descent will converge to a local minima and not necessarily to the global minimum error.
+
+        \paragraph{Momentum}
+          Once again momentum relates to the gradient descent for squared error, however momentum defines the way in which the minima is reached. As there may be several local minimas within the descent path, it would not be desirable to end in a minima which is not actually the global minima. In order to avoid this, the momentum value is linked to the learning rate in that increasing the momentum allows the descent path to continue past local minimas in search of lower squared errors.
+          % A descent gradient is used in order to reach the global minima. However, as this is trying to be found, the algorithm may encounter a local minimum which it may think is the global minima. This can be avoided by changing the value of the momentum, this parameter is linked to the learning rate so as momentum increases, learning rate should remain a smaller value to avoid the global minima from being missed.
+
+        \paragraph{Training Time}
+          The main factor in the learning process of an ANN is the amount of time it has to train. There is no point in time which the network will be ‘done’ learning, so the most optimal amount of learning time must be chosen.
 
 \section{Data set analysis}
   % • Description of the data set attributes (e.g.):
@@ -67,6 +111,13 @@
   % • Reported results for experiments to develop / test initial strategies (Individual student judgement to be used on how far to go with each type of classifier in experiments leave plenty of time for real experiments later)
 
 \section{Main Experiments}
+
+  \begin{figure}[ht]
+    \centering
+    \includegraphics[width=10cm]{birads-outlier-plot}
+    \caption{Test}
+    \label{fig:Test}
+  \end{figure}
 
 % Table generated by Excel2LaTeX from sheet 'Sheet1'
 \begin{table}[htbp]
