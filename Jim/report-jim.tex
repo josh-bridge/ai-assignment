@@ -96,239 +96,277 @@
 \section{Data set analysis} \label{data-set-analysis}
   In this section, the mamographical dataset will be analysed as a preparatory step to pre-processing of the data.
 
-  % • Description of the data set attributes (e.g.):
-  %   (a) Distribution,
-  %   (b) predictive, (individual research required)
-  %   (c) Outliers,
-  %   (d) Attribute measurement scales e.g. nominal, ratio etc.
+    \subsection{BI-RADS} \label{birad}
+      \subsubsection{Measurement}
+        The acronym BI-RADS stands for “Breast Imaging Reporting and Data System” \citep{american1998breast}. It is a system which was designed to introduce some standardisation into the field of diagnosing breast cancer. The score for BI-RADS is on an ordinal scale from 1 to 5, with 1 being benign and 5 being very likely malignant.
+        Below are the 5 definitions of the BI-RADS scale as defined by \cite{american1998breast}.
+
+        \singlespacing
+        \begin{enumerate}[label=\arabic*)]
+          \item Negative
+          \item Benign findings
+          \item Probably benign
+          \item Suspicious abnormality
+          \item Highly suggesting of malignancy
+        \end{enumerate}
+        \doublespacing
+
+      \subsubsection{Distribution}
+        As shown in figure \ref{fig:birads-both-histogram}, the distribution of BI-RADS scores is non-normal and is skewed to the right.
+
+        \begin{figure}[H]
+          \begin{subfigure}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{birads-histogram}
+            \caption{Initial}
+            \label{fig:birads-histogram}
+          \end{subfigure}
+          \hfill
+          \begin{subfigure}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{birads-histogram-no55}
+            \caption{Outlier replaced with median}
+            \label{fig:birads-histogram-no55}
+          \end{subfigure}
+          \caption{BI-RADS histogram}
+          \label{fig:birads-both-histogram}
+        \end{figure}
+
+      \subsubsection{Outliers}
+        Within the BI-RADS attribute there is at least one major outlier as shown in figure \ref{fig:birads-outlier}. This outlier value is ‘55’ and while it could be guessed that this is due to human error of entering a score of ‘5‘ twice accidentally, this outlier must be replaced by the central tendancy. This outlier plot has been repeated in figure \ref{fig:birads-outilier-no55}, with the outlier replaced with the median so as to get a clearer indication of other outliers.
+
+        Figure \ref{fig:birads-outilier-no55} shows that there are several instances with BI-RADS scores of both ‘0’ and ‘6’ which do not exist in the scale. These scores do exist in edition 4 of the BI-RADS scale \citep{d2003breast} however the data descriptors provided with the dataset make no mention of these categories or which edition of the BI-RADS scale it refers to.
+
+        \begin{figure}[H]
+          \begin{subfigure}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{birads-outlier-plot}
+            \caption{Initial}
+            \label{fig:birads-outlier}
+          \end{subfigure}
+          \hfill
+          \begin{subfigure}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{birads-outlier-plot-no55}
+            \caption{Outlier replaced with median}
+            \label{fig:birads-outilier-no55}
+          \end{subfigure}
+          \caption{BI-RADS outlier plots}
+        \end{figure}
+
+      \subsubsection{Predictive}
+        With the BI-RADS score being a predictive scale, this would mean that if the score of BI-RADS was high then the chance of that instance having a melignant severity would be much higher. This can be shown in figure \ref{fig:birads-severity-correlation} where it is shown that there is a slight correlation between a higher BI-RADS score and \% of severity classification.
+
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.6\textwidth]{birads-severity-correlation}
+          \caption{BI-RADS - Severity correlation}
+          \label{fig:birads-severity-correlation}
+        \end{figure}
+
+        \begin{figure}[H]
+          \begin{subfigure}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{birads-probability}
+            \caption{Initial}
+            \label{fig:birads-probability}
+          \end{subfigure}
+          \hfill
+          \begin{subfigure}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{birads-probability}
+            \caption{Outlier replaced with median}
+            \label{fig:birads-probability}
+          \end{subfigure}
+          \caption{BI-RADS probability.}
+        \end{figure}
+
+    \subsection{Age}
+      \subsubsection{Measurement}
+        This is the only non-predictive attribute provided in the dataset, and is a simple ratio scale of the patients age.
+
+      \subsubsection{Distribution}
+        As shown in figure \ref{fig:age-histogram}, the distribution of age within the dataset is non-normal and is skewed very slightly to the right.
+
+        \begin{figure}[H]
+          \centering
+          \begin{minipage}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{age-histogram}
+            \caption{Age histogram}
+            \label{fig:age-histogram}
+          \end{minipage}
+          \hfill
+          \begin{minipage}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{age-probability}
+            \caption{Age probability}
+            \label{fig:age-probability}
+          \end{minipage}
+        \end{figure}
+
+      \subsubsection{Outliers}
+        There does not appear to be any outliers in the age attribute as shown by figure \ref{fig:age-outlier-plot}. There are, however, 2 missing values within the attribute. The central tendancy for this attribute should be the median due to the fact that the data type is ratio and that the distribution is non-normal.
+
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.6\textwidth]{age-outlier-plot}
+          \caption{Age outlier plot}
+          \label{fig:age-outlier-plot}
+        \end{figure}
+
+      \subsubsection{Predictive}
+        While age itself is not a predictive attribute, it has been shown that women diagnosed with breast cancer are much more likely to be above 50 years of age \citep{kerlikowske1993mammography}. This can be backed up by figure \ref{fig:age-severity-correlation} which shows a clear correlation between age and the \% of severity classifications per age group in the provided dataset
+
+        Due to this and the findings with the BI-RADS attribute, it could be inferred that those with an age above 50 and a high BI-RADS score have a very high change of having a malignant severity.
+
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.6\textwidth]{age-severity-correlation}
+          \caption{Age - Severity correlation}
+          \label{fig:age-severity-correlation}
+        \end{figure}
 
 
-    \subsection{Distribution}
-      Below are a set of graphs which show the distribution of the data in each attribute of the dataset. As found in figure \ref{fig:birads-outlier}, there is an outlier in the BiRads data, which in some of the below figures is replaced by the median.
-  \newpage
-    \begin{figure}[H]
-      \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{birads-histogram}
-        \caption{Initial.}
-        \label{fig:birads-histogram}
-      \end{subfigure}
-      \hfill
-      \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{birads-histogram-no55}
-        \caption{Outlier replaced with median.}
-        \label{fig:birads-histogram-no55}
-      \end{subfigure}
-      \caption{BiRads histogram.}
-    \end{figure}
+    \subsection{Shape}
+      \subsubsection{Measurement}
+        This attribute is used to describe the shape of the mass being investigated. It is a nominal attribute as the number scale has no bearing on its meaning. Below are the definitions for each of the shape scores as defined by the dataset.
 
-    \begin{figure}[H]
-      \centering
-      \begin{minipage}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{age-histogram}
-        \caption{Age histogram.}
-        \label{fig:age-histogram}
-      \end{minipage}
-      \hfill
-      \begin{minipage}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{density-histogram}
-        \caption{Density histogram.}
-        \label{fig:density-histogram}
-      \end{minipage}
-    \end{figure}
+        \singlespacing
+        \begin{enumerate}[label=\arabic*)]
+          \item Round
+          \item Oval
+          \item Lobular
+          \item Irregular
+        \end{enumerate}
+        \doublespacing
 
-    \begin{figure}[H]
-      \centering
-      \begin{minipage}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{margin-histogram}
-        \caption{Margin histogram.}
-        \label{fig:margin-histogram}
-      \end{minipage}
-      \hfill
-      \begin{minipage}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{shape-histogram}
-        \caption{Shape histogram.}
-        \label{fig:shape-histogram}
-      \end{minipage}
-    \end{figure}
+      \subsubsection{Distribution}
+        As shown in figure \ref{fig:shape-histogram}, the shape attribute is non-normal and is skewed to the right.
 
-    \begin{figure}[H]
-      \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{birads-probability}
-        \caption{Initial.}
-        \label{fig:birads-probability}
-      \end{subfigure}
-      \hfill
-      \begin{subfigure}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{birads-probability}
-        \caption{Outlier replaced with median.}
-        \label{fig:birads-probability}
-      \end{subfigure}
-      \caption{BiRads probability.}
-    \end{figure}
+        \begin{figure}[H]
+          \centering
+          \begin{minipage}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{shape-histogram}
+            \caption{Shape histogram}
+            \label{fig:shape-histogram}
+          \end{minipage}
+          \hfill
+          \begin{minipage}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{shape-probability}
+            \caption{Shape probability}
+            \label{fig:shape-probability}
+          \end{minipage}
+        \end{figure}
 
-    \begin{figure}[H]
-      \centering
-      \begin{minipage}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{age-probability}
-        \caption{Age probability.}
-        \label{fig:age-probability}
-      \end{minipage}
-      \hfill
-      \begin{minipage}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{density-probability}
-        \caption{Density probability.}
-        \label{fig:density-probability}
-      \end{minipage}
-    \end{figure}
+      \subsubsection{Outliers}
+        While there do not appear to be any outliers within this attribute, it does contain 31 missing values. Due to it being nominal the central tendancy for these values should be the mode.
 
-    \begin{figure}[H]
-      \centering
-      \begin{minipage}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{margin-probability}
-        \caption{Margin probability.}
-        \label{fig:margin-probability}
-      \end{minipage}
-      \hfill
-      \begin{minipage}[b]{0.45\textwidth}
-        \includegraphics[width=\textwidth]{shape-probability}
-        \caption{Shape probability.}
-        \label{fig:shape-probability}
-      \end{minipage}
-    \end{figure}
+      \subsubsection{Predictive}
+        In figure \ref{fig:shape-severity-correlation} below it can be seen that while shape is not on an ordinal scale, a higher score of shape is correlated with a higher chance of a malignant severity.
 
-      \begin{figure}[H]
-        \begin{subfigure}[b]{0.45\textwidth}
-          \includegraphics[width=\textwidth]{birads-outlier-plot}
-          \caption{Initial.}
-          \label{fig:birads-outlier}
-        \end{subfigure}
-        \hfill
-        \begin{subfigure}[b]{0.45\textwidth}
-          \includegraphics[width=\textwidth]{birads-outlier-plot-no55}
-          \caption{Outlier replaced with median.}
-          \label{fig:birads-outilier-no55}
-        \end{subfigure}
-        \caption{BiRads outlier plots.}
-      \end{figure}
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.6\textwidth]{shape-severity-correlation}
+          \caption{Shape - Severity correlation}
+          \label{fig:shape-severity-correlation}
+        \end{figure}
 
-  \subsection{Attributes}
-    \paragraph{BI-RADS.} \label{birad}
-      The acronym BI-RADS stands for “Breast Imaging Reporting and Data System” \citep{american1998breast}. It is a system which was designed to introduce some standardisation into the field of diagnosing breast cancer. The score for BI-RADS is on an ordinal scale from 1 to 5, with 1 being benign and 5 being very likely malignant.
-      Below are the 5 definitions of the BI-RADS scale as defined by \cite{american1998breast}.
+    \subsection{Margin}
+      \subsubsection{Measurement}
+        The margin attribute is used to describe the edges of the mass and their distinctiveness from the rest of the breast tissue within the scan. This is also a nominal attribute as there is no scale for the margin descriptors. Below are the 5 different definitions for each of the margin scores.
 
-      \singlespacing
-      \begin{enumerate}[label=\arabic*)]
-        \item Negative
-        \item Benign findings
-        \item Probably benign
-        \item Suspicious abnormality
-        \item Highly suggesting of malignancy
-      \end{enumerate}
-      \doublespacing
+        \singlespacing
+        \begin{enumerate}[label=\arabic*)]
+          \item Circumscribed
+          \item Microlobulated
+          \item Obscured
+          \item Ill-defined
+          \item Spiculated
+        \end{enumerate}
+        \doublespacing
 
-      With the BI-RADS score being a predictive scale, this would mean that if the score of BI-RADS was high then the chance of that instance having a melignant severity would be much higher. This can be proven in figure \ref{fig:birads-severity-correlation} where it is shown that there is a correlation between a higher BI-RADS score and \% of severity classification. Figure \ref{fig:birads-outilier-no55} shows that there are several instances with BI-RADS scores of both ‘0’ and ‘6’ which do not exist in the scale. These scores do exist in edition 4 of the BI-RADS scale \citep{d2003breast} however the data descriptors provided with the dataset make no mention of these categories or which edition of the BI-RADS scale it refers to.
+      \subsubsection{Distribution}
+        The distribution of values in the margin attribute appears to be non-normal and is skewed to the right.
 
-      \begin{figure}[H]
-        \centering
-        \includegraphics[width=0.8\textwidth]{birads-severity-correlation}
-        \caption{BI-RADS - Severity correlation}
-        \label{fig:birads-severity-correlation}
-      \end{figure}
+        \begin{figure}[H]
+          \centering
+          \begin{minipage}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{margin-histogram}
+            \caption{Margin histogram}
+            \label{fig:margin-histogram}
+          \end{minipage}
+          \hfill
+          \begin{minipage}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{margin-probability}
+            \caption{Margin probability}
+            \label{fig:margin-probability}
+          \end{minipage}
+        \end{figure}
 
-    \paragraph{Age.}
-      This is the only non-predictive attribute provided in the dataset, and is a simple ratio scale of the patients age. While age is not a predictive attribute, women diagnosed with breast cancer are much more likely to be above 50 years of age \citep{kerlikowske1993mammography}. This can be backed up by figure \ref{fig:age-severity-correlation} which shows a clear correlation between age and the \% of severity classifications per age group in the provided dataset.
+      \subsubsection{Outliers}
+        There does not appear to be any outliers within this attribute however it does contain 48 missing values. Due to it again being a nominal value the central tendancy for these values should be the mode.
 
-      \begin{figure}[H]
-        \centering
-        \includegraphics[width=0.8\textwidth]{age-severity-correlation}
-        \caption{Age - Severity correlation}
-        \label{fig:age-severity-correlation}
-      \end{figure}
+      \subsubsection{Predictive}
+        Once again, it can be observed in figure \ref{fig:margin-severity-correlation} that a higher score of margin will correlate with a higher chance of a malignant severity.
 
-      Due to this and the findings with the BI-RADS attribute, it could be inferred that those with an age above 50 and a high BI-RADS score have a very high change of having a malignant severity.
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.6\textwidth]{margin-severity-correlation}
+          \caption{Margin - Severity correlation}
+          \label{fig:margin-severity-correlation}
+        \end{figure}
 
-      As shown in figure \ref{fig:age-histogram}, the distribution of age within the dataset is not normal and is skewed very slightly right.
+    \subsection{Density}
+      \subsubsection{Measurement}
+        This attribute is used to describe the density of the mass on an ordinal scale. A lower score indicates a higher density, which has been shown to be a significant predictor of breast cancer \citep{woods2011mammographic}. Below are the descriptors used to score masses onto the ordinal scale.
 
-    \paragraph{Shape.}
-      This attribute is used to describe the shape of the mass being investigated. It is a nominal attribute as the number scale has no bearing on its meaning. Below are the definitions for each of the shape scores as defined by the dataset.
+        \singlespacing
+        \begin{enumerate}[label=\arabic*)]
+          \item High
+          \item ISO (Isodense)
+          \item Low
+          \item Fat-containing
+        \end{enumerate}
+        \doublespacing
 
-      \singlespacing
-      \begin{enumerate}[label=\arabic*)]
-        \item Round
-        \item Oval
-        \item Lobular
-        \item Irregular
-      \end{enumerate}
-      \doublespacing
+      \subsubsection{Distribution}
+        As shown in figure \ref{fig:margin-histogram}, the distribution of values in the density attribute appear to be non-normal and skewed to the right.
 
-      In figure \ref{fig:shape-severity-correlation} below it can be seen that while shape is not on an ordinal scale, a higher score of shape is correlated with a higher chance of a malignant severity.
+        \begin{figure}[H]
+          \centering
+          \begin{minipage}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{density-histogram}
+            \caption{Density histogram}
+            \label{fig:density-histogram}
+          \end{minipage}
+          \hfill
+          \begin{minipage}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{density-probability}
+            \caption{Density probability}
+            \label{fig:density-probability}
+          \end{minipage}
+        \end{figure}
 
-      \begin{figure}[H]
-        \centering
-        \includegraphics[width=0.8\textwidth]{shape-severity-correlation}
-        \caption{Shape - Severity correlation}
-        \label{fig:shape-severity-correlation}
-      \end{figure}
+      \subsubsection{Outliers}
+        While there is no outliers within this attribute, there are 76 missing values. The central tendancy for replacing these values should be the median due to the data type being ordinal.
 
-    \paragraph{Margin.}
-      The margin attribute is used to describe the edges of the mass and their distinctiveness from the rest of the breast tissue within the scan. This is also a nominal attribute as there is no scale for the margin descriptors. Below are the 5 different definitions for each of the margin scores.
+      \subsubsection{Predictive}
+        Figure \ref{fig:density-severity-correlation} below shows that in contrary to \cite{woods2011mammographic}, the dataset provided does not seem to have a significant correlation between high-density masses and a malignant severity.
 
-      \singlespacing
-      \begin{enumerate}[label=\arabic*)]
-        \item Circumscribed
-        \item Microlobulated
-        \item Obscured
-        \item Ill-defined
-        \item Spiculated
-      \end{enumerate}
-      \doublespacing
 
-      Once again, it can be observed in figure \ref{fig:margin-severity-correlation} that a higher score of margin will correlate with a higher chance of a malignant severity.
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.6\textwidth]{density-severity-correlation}
+          \caption{Density - Severity correlation}
+          \label{fig:density-severity-correlation}
+        \end{figure}
 
-      \begin{figure}[H]
-        \centering
-        \includegraphics[width=0.8\textwidth]{margin-severity-correlation}
-        \caption{Margin - Severity correlation}
-        \label{fig:margin-severity-correlation}
-      \end{figure}
-
-    \paragraph{Density.}
-      This attribute is used to describe the density of the mass on an ordinal scale. A lower score indicates a higher density, which has been shown to be a significant predictor of breast cancer \citep{woods2011mammographic}. Below are the descriptors used to score masses onto the ordinal scale.
-
-      \singlespacing
-      \begin{enumerate}[label=\arabic*)]
-        \item High
-        \item ISO (Isodense)
-        \item Low
-        \item Fat-containing
-      \end{enumerate}
-      \doublespacing
-
-      Figure \ref{fig:density-severity-correlation} below shows that in contrary to \cite{woods2011mammographic}, the dataset provided does not seem to have a significant correlation between high-density masses and a malignant severity.
-
-      \begin{figure}[H]
-        \centering
-        \includegraphics[width=0.8\textwidth]{density-severity-correlation}
-        \caption{Density - Severity correlation}
-        \label{fig:density-severity-correlation}
-      \end{figure}
-
-    \paragraph{Severity.}
+    \subsection{Severity}
       This field is known as a goal field and is a binomial type. This field contains the classification of the instances. In order to make the dataset more compatible with WEKA processing, the original values of ‘0’ and ‘1’ have been replaced by ‘$-$’ and ‘+’ respectively.
 
 \section{Classifier Evaluation}
-  \subsection{Decision Tree}
+  In this section the two different classifier types will be evaluated for their suitability in the task of classifying the mammographic dataset.
 
-    % Should be faster once trained (although both algorithms can train slowly depending on exact algorithm and the amount/dimensionality of the data). This is because a decision tree inherently "throws away" the input features that it doesn't find useful, whereas a neural net will use them all unless you do some feature selection as a pre-processing step.
-    % If it is important to understand what the model is doing, the trees are very interpretable.
-    % Only model functions which are axis-parallel splits of the data, which may not be the case.
-    % You probably want to be sure to prune the tree to avoid over-fitting.
+  \subsection{Decision Tree}
     \subsubsection{Strengths}
       \paragraph{Speed.}
         Decision trees are often a lot faster than neural networks (once trained), this is due to the fact that the algorithm creates a set of simple rules which are very quick to execute, and can be implemented in any programming language.
       \paragraph{Interpretability.}
         Again due to the nature of decision trees, the resulting classifier is very easy to interpret due to the creation of simple rules. It then provides insights on the relationships between the attributes and the classes.
-      \paragraph{Selectivity.}
+      \paragraph{Feature selection.}
         Decision trees are good with noisy data due to the fact that they are able to completely ignore certain attributes if they are not deemed important enough as a contributor to classification.
 
     \subsubsection{Weaknesses}
@@ -336,16 +374,23 @@
         Decision trees are not as good at handling data with nonlinear relationships due to their structure. If the relationship between two attributes is not definable in a simple rule then a decision tree will not be able to
 
   \subsection{Artificial Neural Network}
-    % Slower (both for training and classification), and less interpretable.
-    % If your data arrives in a stream, you can do incremental updates with stochastic gradient descent (unlike decision trees, which use inherently batch-learning algorithms).
-    % Can model more arbitrary functions (nonlinear interactions, etc.) and therefore might be more accurate, provided there is enough training data. But it can be prone to over-fitting as well.
     \subsubsection{Strengths}
+      \paragraph{Nonlinear interactions.}
+        ANNs are very good at handling abstract relationships in datasets, therefore if there is any information contained in the data which can be inferred, then it is likely that a neural network could make use of this inferrance.
 
     \subsubsection{Weaknesses}
+      \paragraph{No feature Selection.}
+        ANNs automatically use every piece of input data given to them. If one or more of the attributes contain noisy data or do not provide much value, then these could hinder the performance of the classifier unless they are removed manually as a pre-processing step.
+
+      \paragraph{Black box.}
+        ANNs do not provide a systematical view of how a classification is made (it can be done given the proper functions and weight/bias values, however calculating it manually could take a very long time). This is not useful when trying to determine the relationships between different attributes in the data.
+
+      \paragraph{Speed.}
+        The time taken for both training and classification are often higher in neural netwoks especially when the complexity of the network structure is increased (i.e. by adding more neurons and/or hidden layers).
 
   \subsection{Prediction}
     In order to predict the outcome of which classifier is most suited for this task, it must be made clear how the dataset will interact with the classifier.
-    In section \ref{data-set-analysis} it was shown that the dataset has some clear links between attributes and classifications (such as a high correlation between age and severity shown in figure \ref{fig:age-severity-correlation}). Due to the nature of decision trees which are more able to deal with data that has a clear link between attributes and classification, it could be presumed that the decision tree classifier would be more suited for this task than an artificial neural network.
+    In section \ref{data-set-analysis} it was shown that the dataset has some clear links between attributes and classifications (such as a high correlation between age and severity shown in figure \ref{fig:age-severity-correlation}). Due to the nature of decision trees which are more able to deal with data that have a clear link between attributes and classification, it could be presumed that the decision tree classifier would be more suited for this task than an artificial neural network.
 
 \section{Initial Experiments}
   % Strategy for missing attribute values. Justified with evidence/argument
