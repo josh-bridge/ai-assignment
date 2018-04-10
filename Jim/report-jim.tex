@@ -10,6 +10,10 @@
 \usepackage{float}
 \usepackage[top=3.5cm,left=2.7cm,right=2.7cm,bottom=3.5cm]{geometry} % 'showframe' to see borders
 \usepackage{booktabs}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{enumitem}
+
 
 \graphicspath{ {diagrams/} }
 
@@ -50,10 +54,10 @@
       %   I(X,Y)= H(X)-H(X|Y)
       % \end{equation}
 
-      \paragraph{Confidence}
+      \paragraph{Confidence.}
         The confidence parameter is a way of controlling the amount of error-based pruning \citep{quinlan1987simplifying} within the decision tree. More specifically, post-pruning is the process of estimating the error rate (probability of mis-classification) at each node in the tree, and deciding whether or not to remove the node. Lower values of the confidence factor will result in the post-pruning becoming much more aggressive with removing nodes \citep{beck2008backward}.
 
-      \paragraph{Minimum number of objects}
+      \paragraph{Minimum number of objects.}
         Within weka the Minimum number of objects parameter controls the Minimum number of instances per leaf. This means that each leaf within the tree must have at least the specified amount of classified instances for it not to be pruned. This parameter is good for data-sets which are particularly noisy which could introduce some leaf nodes which are not very stable classifiers. With a higher minimum number of objects, the tree will likely become much more pruned.
 
     % https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4466856/
@@ -72,36 +76,276 @@
 
       \subsubsection{Multilayer Perceptron} \label{mlp}
         \citep{minsky2017perceptrons}
-        \paragraph{Hidden Layers}
+        \paragraph{Hidden Layers.}
           The hidden layers parameter allows the user to define the strcuture of the network they would like to train. Introducing more layers \& neurons introduces more complexity which is good for more complex datasets with attributes which are not lineraly seperable, however for simpler datasets this may introduce unwanted complexity within the network. What hidden layers are and how they relate to the ANN is explained in more deatail in section \ref{ann}.
 
-        \paragraph{Learning Rate}
+        \paragraph{Learning Rate.}
           Learning rate applies to the backpropagation algorithm and more specifically the Gradient Descent. It concerns the speed at which the minimum squared error is reached. A low learning rate would mean that many updates (a high training time) would be needed in order to find the global minimum - which is not desirable. If the learning rate is too high however, then this can lead to divergent behaviour where the backpropagation algorithm is not able to correctly settle on an optimal minimum.
 
           % This algorithm aims at learning the weights of a multilayer ANN with a fixed number of units and interconnections, by using gradient descent in order to minimize the squared error between the network outputs and the correspondent target values.
 
           % The backpropagation algorithm can be viewed as a searching algorithm whose state space corresponds to all possible weights for the network units. The algorithm uses the squared error between the network outputs and the target values as a fitness function to guide the gradient descend. The correspondent error surface can thus be considered multidimensional and may have multiple local minima. This characteristic guarantees only that the gradient descent will converge to a local minima and not necessarily to the global minimum error.
 
-        \paragraph{Momentum}
+        \paragraph{Momentum.}
           Once again momentum relates to the gradient descent for squared error, however momentum defines the way in which the minima is reached. As there may be several local minimas within the descent path, it would not be desirable to end in a minima which is not actually the global minima. In order to avoid this, the momentum value is linked to the learning rate in that increasing the momentum allows the descent path to continue past local minimas in search of lower squared errors.
           % A descent gradient is used in order to reach the global minima. However, as this is trying to be found, the algorithm may encounter a local minimum which it may think is the global minima. This can be avoided by changing the value of the momentum, this parameter is linked to the learning rate so as momentum increases, learning rate should remain a smaller value to avoid the global minima from being missed.
 
-        \paragraph{Training Time}
-          The main factor in the learning process of an ANN is the amount of time it has to train. There is no point in time which the network will be ‘done’ learning, so the most optimal amount of learning time must be chosen.
+        \paragraph{Training Time.}
+          The main factor in the learning process of an ANN is the amount of time it has to train. There is no point in time which the network will be ‘done’ learning therefore the most optimal amount of learning time must be chosen. Training time is measured in ‘epochs’, where 1 epoch is the completion of a single training iteration. A training iteration includes the inputs passing through every layer, providing an output, and then the backpropagation algorithm updating the weights and biases for each applicable neuron. If the training time is too high, this can lead to something called ‘overtraining’ where the ANN becomes too dependent on the training data and will start giving worse results when presented with unseen testing data. Therefore it is necessary to find the optimal training time, in combination with the optimal learning rate and momentum.
 
-\section{Data set analysis}
+\section{Data set analysis} \label{data-set-analysis}
+  In this section, the mamographical dataset will be analysed as a preparatory step to pre-processing of the data.
+
   % • Description of the data set attributes (e.g.):
   %   (a) Distribution,
   %   (b) predictive, (individual research required)
   %   (c) Outliers,
   %   (d) Attribute measurement scales e.g. nominal, ratio etc.
 
-\section{Classifier Prediction}
-  % • Based on the evidence from sections 2 and 3, what are the strengths and weaknesses of a decision tree when applied to the dataset
 
-  % • Based on the evidence from sections 2 and 3, what are the strengths and weaknesses of an artificial neural network when applied to the dataset
+    \subsection{Distribution}
+      Below are a set of graphs which show the distribution of the data in each attribute of the dataset. As found in figure \ref{fig:birads-outlier}, there is an outlier in the BiRads data, which in some of the below figures is replaced by the median.
+  \newpage
+    \begin{figure}[H]
+      \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{birads-histogram}
+        \caption{Initial.}
+        \label{fig:birads-histogram}
+      \end{subfigure}
+      \hfill
+      \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{birads-histogram-no55}
+        \caption{Outlier replaced with median.}
+        \label{fig:birads-histogram-no55}
+      \end{subfigure}
+      \caption{BiRads histogram.}
+    \end{figure}
 
-  % • Prediction: which classifier is likely to be best for the dataset (before you have done any experiments) Individual research required for this section.
+    \begin{figure}[H]
+      \centering
+      \begin{minipage}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{age-histogram}
+        \caption{Age histogram.}
+        \label{fig:age-histogram}
+      \end{minipage}
+      \hfill
+      \begin{minipage}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{density-histogram}
+        \caption{Density histogram.}
+        \label{fig:density-histogram}
+      \end{minipage}
+    \end{figure}
+
+    \begin{figure}[H]
+      \centering
+      \begin{minipage}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{margin-histogram}
+        \caption{Margin histogram.}
+        \label{fig:margin-histogram}
+      \end{minipage}
+      \hfill
+      \begin{minipage}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{shape-histogram}
+        \caption{Shape histogram.}
+        \label{fig:shape-histogram}
+      \end{minipage}
+    \end{figure}
+
+    \begin{figure}[H]
+      \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{birads-probability}
+        \caption{Initial.}
+        \label{fig:birads-probability}
+      \end{subfigure}
+      \hfill
+      \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{birads-probability}
+        \caption{Outlier replaced with median.}
+        \label{fig:birads-probability}
+      \end{subfigure}
+      \caption{BiRads probability.}
+    \end{figure}
+
+    \begin{figure}[H]
+      \centering
+      \begin{minipage}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{age-probability}
+        \caption{Age probability.}
+        \label{fig:age-probability}
+      \end{minipage}
+      \hfill
+      \begin{minipage}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{density-probability}
+        \caption{Density probability.}
+        \label{fig:density-probability}
+      \end{minipage}
+    \end{figure}
+
+    \begin{figure}[H]
+      \centering
+      \begin{minipage}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{margin-probability}
+        \caption{Margin probability.}
+        \label{fig:margin-probability}
+      \end{minipage}
+      \hfill
+      \begin{minipage}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{shape-probability}
+        \caption{Shape probability.}
+        \label{fig:shape-probability}
+      \end{minipage}
+    \end{figure}
+
+      \begin{figure}[H]
+        \begin{subfigure}[b]{0.45\textwidth}
+          \includegraphics[width=\textwidth]{birads-outlier-plot}
+          \caption{Initial.}
+          \label{fig:birads-outlier}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[b]{0.45\textwidth}
+          \includegraphics[width=\textwidth]{birads-outlier-plot-no55}
+          \caption{Outlier replaced with median.}
+          \label{fig:birads-outilier-no55}
+        \end{subfigure}
+        \caption{BiRads outlier plots.}
+      \end{figure}
+
+  \subsection{Attributes}
+    \paragraph{BI-RADS.} \label{birad}
+      The acronym BI-RADS stands for “Breast Imaging Reporting and Data System” \citep{american1998breast}. It is a system which was designed to introduce some standardisation into the field of diagnosing breast cancer. The score for BI-RADS is on an ordinal scale from 1 to 5, with 1 being benign and 5 being very likely malignant.
+      Below are the 5 definitions of the BI-RADS scale as defined by \cite{american1998breast}.
+
+      \singlespacing
+      \begin{enumerate}[label=\arabic*)]
+        \item Negative
+        \item Benign findings
+        \item Probably benign
+        \item Suspicious abnormality
+        \item Highly suggesting of malignancy
+      \end{enumerate}
+      \doublespacing
+
+      With the BI-RADS score being a predictive scale, this would mean that if the score of BI-RADS was high then the chance of that instance having a melignant severity would be much higher. This can be proven in figure \ref{fig:birads-severity-correlation} where it is shown that there is a correlation between a higher BI-RADS score and \% of severity classification. Figure \ref{fig:birads-outilier-no55} shows that there are several instances with BI-RADS scores of both ‘0’ and ‘6’ which do not exist in the scale. These scores do exist in edition 4 of the BI-RADS scale \citep{d2003breast} however the data descriptors provided with the dataset make no mention of these categories or which edition of the BI-RADS scale it refers to.
+
+      \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{birads-severity-correlation}
+        \caption{BI-RADS - Severity correlation}
+        \label{fig:birads-severity-correlation}
+      \end{figure}
+
+    \paragraph{Age.}
+      This is the only non-predictive attribute provided in the dataset, and is a simple ratio scale of the patients age. While age is not a predictive attribute, women diagnosed with breast cancer are much more likely to be above 50 years of age \citep{kerlikowske1993mammography}. This can be backed up by figure \ref{fig:age-severity-correlation} which shows a clear correlation between age and the \% of severity classifications per age group in the provided dataset.
+
+      \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{age-severity-correlation}
+        \caption{Age - Severity correlation}
+        \label{fig:age-severity-correlation}
+      \end{figure}
+
+      Due to this and the findings with the BI-RADS attribute, it could be inferred that those with an age above 50 and a high BI-RADS score have a very high change of having a malignant severity.
+
+      As shown in figure \ref{fig:age-histogram}, the distribution of age within the dataset is not normal and is skewed very slightly right.
+
+    \paragraph{Shape.}
+      This attribute is used to describe the shape of the mass being investigated. It is a nominal attribute as the number scale has no bearing on its meaning. Below are the definitions for each of the shape scores as defined by the dataset.
+
+      \singlespacing
+      \begin{enumerate}[label=\arabic*)]
+        \item Round
+        \item Oval
+        \item Lobular
+        \item Irregular
+      \end{enumerate}
+      \doublespacing
+
+      In figure \ref{fig:shape-severity-correlation} below it can be seen that while shape is not on an ordinal scale, a higher score of shape is correlated with a higher chance of a malignant severity.
+
+      \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{shape-severity-correlation}
+        \caption{Shape - Severity correlation}
+        \label{fig:shape-severity-correlation}
+      \end{figure}
+
+    \paragraph{Margin.}
+      The margin attribute is used to describe the edges of the mass and their distinctiveness from the rest of the breast tissue within the scan. This is also a nominal attribute as there is no scale for the margin descriptors. Below are the 5 different definitions for each of the margin scores.
+
+      \singlespacing
+      \begin{enumerate}[label=\arabic*)]
+        \item Circumscribed
+        \item Microlobulated
+        \item Obscured
+        \item Ill-defined
+        \item Spiculated
+      \end{enumerate}
+      \doublespacing
+
+      Once again, it can be observed in figure \ref{fig:margin-severity-correlation} that a higher score of margin will correlate with a higher chance of a malignant severity.
+
+      \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{margin-severity-correlation}
+        \caption{Margin - Severity correlation}
+        \label{fig:margin-severity-correlation}
+      \end{figure}
+
+    \paragraph{Density.}
+      This attribute is used to describe the density of the mass on an ordinal scale. A lower score indicates a higher density, which has been shown to be a significant predictor of breast cancer \citep{woods2011mammographic}. Below are the descriptors used to score masses onto the ordinal scale.
+
+      \singlespacing
+      \begin{enumerate}[label=\arabic*)]
+        \item High
+        \item ISO (Isodense)
+        \item Low
+        \item Fat-containing
+      \end{enumerate}
+      \doublespacing
+
+      Figure \ref{fig:density-severity-correlation} below shows that in contrary to \cite{woods2011mammographic}, the dataset provided does not seem to have a significant correlation between high-density masses and a malignant severity.
+
+      \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{density-severity-correlation}
+        \caption{Density - Severity correlation}
+        \label{fig:density-severity-correlation}
+      \end{figure}
+
+    \paragraph{Severity.}
+      This field is known as a goal field and is a binomial type. This field contains the classification of the instances. In order to make the dataset more compatible with WEKA processing, the original values of ‘0’ and ‘1’ have been replaced by ‘$-$’ and ‘+’ respectively.
+
+\section{Classifier Evaluation}
+  \subsection{Decision Tree}
+
+    % Should be faster once trained (although both algorithms can train slowly depending on exact algorithm and the amount/dimensionality of the data). This is because a decision tree inherently "throws away" the input features that it doesn't find useful, whereas a neural net will use them all unless you do some feature selection as a pre-processing step.
+    % If it is important to understand what the model is doing, the trees are very interpretable.
+    % Only model functions which are axis-parallel splits of the data, which may not be the case.
+    % You probably want to be sure to prune the tree to avoid over-fitting.
+    \subsubsection{Strengths}
+      \paragraph{Speed.}
+        Decision trees are often a lot faster than neural networks (once trained), this is due to the fact that the algorithm creates a set of simple rules which are very quick to execute, and can be implemented in any programming language.
+      \paragraph{Interpretability.}
+        Again due to the nature of decision trees, the resulting classifier is very easy to interpret due to the creation of simple rules. It then provides insights on the relationships between the attributes and the classes.
+      \paragraph{Selectivity.}
+        Decision trees are good with noisy data due to the fact that they are able to completely ignore certain attributes if they are not deemed important enough as a contributor to classification.
+
+    \subsubsection{Weaknesses}
+      \paragraph{Nonlinear interactions.}
+        Decision trees are not as good at handling data with nonlinear relationships due to their structure. If the relationship between two attributes is not definable in a simple rule then a decision tree will not be able to
+
+  \subsection{Artificial Neural Network}
+    % Slower (both for training and classification), and less interpretable.
+    % If your data arrives in a stream, you can do incremental updates with stochastic gradient descent (unlike decision trees, which use inherently batch-learning algorithms).
+    % Can model more arbitrary functions (nonlinear interactions, etc.) and therefore might be more accurate, provided there is enough training data. But it can be prone to over-fitting as well.
+    \subsubsection{Strengths}
+
+    \subsubsection{Weaknesses}
+
+  \subsection{Prediction}
+    In order to predict the outcome of which classifier is most suited for this task, it must be made clear how the dataset will interact with the classifier.
+    In section \ref{data-set-analysis} it was shown that the dataset has some clear links between attributes and classifications (such as a high correlation between age and severity shown in figure \ref{fig:age-severity-correlation}). Due to the nature of decision trees which are more able to deal with data that has a clear link between attributes and classification, it could be presumed that the decision tree classifier would be more suited for this task than an artificial neural network.
 
 \section{Initial Experiments}
   % Strategy for missing attribute values. Justified with evidence/argument
@@ -112,12 +356,8 @@
 
 \section{Main Experiments}
 
-  \begin{figure}[ht]
-    \centering
-    \includegraphics[width=10cm]{birads-outlier-plot}
-    \caption{Test}
-    \label{fig:Test}
-  \end{figure}
+
+
 
 % Table generated by Excel2LaTeX from sheet 'Sheet1'
 \begin{table}[htbp]
@@ -286,9 +526,9 @@
 
   % • Plan for artificial neural network experiments, with justification
 
-  %   (a) Execution of artificial neural network experiments to find artificial neural network with highest classi- fication accuracy using a single layer of neurons
+  %   (a) Execution of artificial neural network experiments to find artificial neural network with highest classification accuracy using a single layer of neurons
 
-  %   (b) Execution of artificial neural network experiments to find artificial neural network with highest classi- fication accuracy using a multiple layers of neurons (Individual student judgement to be used on how many layers to be used).
+  %   (b) Execution of artificial neural network experiments to find artificial neural network with highest classification accuracy using a multiple layers of neurons (Individual student judgement to be used on how many layers to be used).
 
 
 \section{Advanced Pre-processing}
