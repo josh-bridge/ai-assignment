@@ -20,7 +20,7 @@
 \title{\vspace{2cm}6G6Z1705\\\textbf{Artificial Intelligence}\\\vspace{2cm}Scenario 2\\\vspace{2cm}}
 \author{14032908\\Joshua Michael Ephraim Bridge\\joshua.m.bridge@stu.mmu.ac.uk\\\vspace{1cm}}
 
-% \pagestyle{headings}
+\pagestyle{headings}
 
 \begin{document}
 
@@ -36,7 +36,7 @@
 \section{AI classifiers}
   In this section a brief study will be conducted into the two classifier types mentioned previously.
 
-  \subsection{Decision Trees}
+  \subsection{Decision Trees} \label{res-destrees}
     A decision tree is a type of classifier (specifically a hierarchical variant of a multistage classifier, as defined by \cite{safavian1991survey}) which uses a tree-like structure to test values on different attributes in a format similar to a flow chart. The tree structure itself could be described as a single root node with 0 to many connected children, each themselves with 0 to many connected children. Any node in a decision tree with no children is known as a leaf node and has a direct relationship with a class label. At each node in the tree a test is carried out on an attribute and the result of that test decides on which of the child nodes the process should continue onto. The process of completing each test from the root node to a leaf node should result in a classification of the data provided.
 
     Self-learning decision trees are often very useful because they explicitly define how the instances are classified within the tree, simplifying the process into a set of simple rules. This is different to ANN's (see section \ref{ann}) where the classification process is mostly hidden and can often be a very complex set of rules which would be very hard to follow.
@@ -198,13 +198,21 @@
         \end{figure}
 
       \subsubsection{Outliers}
-        There does not appear to be any outliers in the age attribute as shown by figure \ref{fig:age-outlier-plot}. There are, however, 2 missing values within the attribute. The central tendancy for this attribute should be the median due to the fact that the data type is ratio and that the distribution is non-normal.
+        There does not appear to be any outliers in the age attribute as shown by figure \ref{fig:age-outlier-plot}. There are, however, 2 missing values within the attribute. The central tendancy for this attribute should be the median due to the fact that the scale type is ratio and that the distribution is non-normal.
 
         \begin{figure}[H]
           \centering
-          \includegraphics[width=0.6\textwidth]{age-outlier-plot}
-          \caption{Age outlier plot}
-          \label{fig:age-outlier-plot}
+          \begin{minipage}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{age-outlier-plot}
+            \caption{Age outlier plot}
+            \label{fig:age-outlier-plot}
+          \end{minipage}
+          \hfill
+          \begin{minipage}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{age-boxplot}
+            \caption{Age boxplot}
+            \label{fig:age-boxplot}
+          \end{minipage}
         \end{figure}
 
       \subsubsection{Predictive}
@@ -232,6 +240,8 @@
           \item Irregular
         \end{enumerate}
         \doublespacing
+
+        When performing experiments in WEKA, the values in this attribute will be replaced with text values to ensure its processing as a nominal attribute.
 
       \subsubsection{Distribution}
         As shown in figure \ref{fig:shape-histogram}, the shape attribute is non-normal and is skewed to the right.
@@ -277,6 +287,8 @@
           \item Spiculated
         \end{enumerate}
         \doublespacing
+
+        As with the previous attribute, when performing experiments in WEKA the values in this attribute will be replaced with text values to ensure its processing as a nominal attribute.
 
       \subsubsection{Distribution}
         The distribution of values in the margin attribute appears to be non-normal and is skewed to the right.
@@ -400,204 +412,661 @@
   % • Reported results for experiments to develop / test initial strategies (Individual student judgement to be used on how far to go with each type of classifier in experiments leave plenty of time for real experiments later)
 
 \section{Main Experiments}
+  In this section the experiments will be carried out which indicate the best possible classifier for both Decision trees and Artificial Neural Networks.
 
+  \subsection{Decision tree}
+    As a result of the information presented in section \ref{res-destrees}, a series of experiments will be carried out to find the optimal parameters for training when a J48 decision tree algorithm is used on the mamographical dataset. In this section two trees will be laid out, the first being the tree with the highest classification accuracy and the second being the one which is most pruned but not significantly worse than the highest accuracy tree.
 
+    \subsubsection{Plan}
+      The first series of experiments will be to find the optimal confidence setting, by iterating through different values at gradually smaller intervals. Once the optimal confidence value is found, then the Minimum number of Object parameter will also need to be tuned in order to find its optimal value. Once again this can be done by increasing the value at set increments and reducing the size of the increments around values which show the highest accuracy results.
 
+    \subsubsection{Execution} \label{dt-execution}
+      Tables \ref{tab:dt-con-a}, \ref{tab:dt-con-b} \& \ref{tab:dt-con-c} illustrate the process of finding the optimal confidence parameter value. As seen in table \ref{tab:dt-con-c} the optimal confidence value (with the minimum number of objects parameter set to its default of 2) is 0.247, which gives an accuracy score of 82.99. As many of the accuracy values are repeating with the 3 decimal point intervals seen in table \ref{tab:dt-con-c}, there is no reason to search through smaller intervals.
 
-% Table generated by Excel2LaTeX from sheet 'Sheet1'
-\begin{table}[htbp]
-  \centering
-  \caption{Confidence (MO=2)}
-    \begin{tabular}{c|r}
-    \toprule
-    \multicolumn{1}{l|}{Confidence} & \multicolumn{1}{l}{Accuracy} \\
-    \midrule
-    0.05  & 82.2 \\
-    0.1   & 82.16 \\
-    0.15  & 82.19 \\
-    0.2   & 82.27 \\
-    0.25  & 82.19 \\
-    0.3   & \textbf{82.33} \\
-    0.35  & 82.31 \\
-    0.4   & 82.12 \\
-    \bottomrule
-    \end{tabular}%
-  \label{tab:addlabel}%
-\end{table}%
+      \singlespacing
+      \begin{table}[H]
+          \caption{Confidence tuning}
+          \begin{subtable}{.32\linewidth}
+            \centering
+            \caption{}
+            \begin{tabular}{c|c}
+              \toprule
+              \multicolumn{1}{c|}{Confidence} & \multicolumn{1}{c}{Accuracy (\%)} \\
+              \midrule
+              0.05  & 82.26 \\
+              0.10  & 82.81 \\
+              0.15  & 82.79 \\
+              0.20  & 82.80 \\
+              0.25  & \textbf{82.99} \\
+              0.30  & 82.92 \\
+              0.35  & 82.57 \\
+              0.40  & 82.42 \\
+              0.45  & 82.30 \\
+              0.50  & 82.19 \\
+              0.55  & 82.14 \\
+              0.60  & 82.14 \\
+              0.65  & 82.14 \\
+              0.70  & 82.14 \\
+              0.75  & 82.14 \\
+              0.80  & 82.14 \\
+              0.85  & 82.14 \\
+              0.90  & 82.14 \\
+              0.95  & 82.14 \\
+              1.00  & 82.14 \\
+              \bottomrule
+            \end{tabular}
+            \label{tab:dt-con-a}
+          \end{subtable}
+          \begin{subtable}{.32\linewidth}
+            \centering
+            \caption{}
+            \begin{tabular}{c|c}
+              \toprule
+              \multicolumn{1}{c|}{Confidence} & \multicolumn{1}{c}{Accuracy (\%)} \\
+              \midrule
+              0.21  & 82.88 \\
+              0.22  & 82.88 \\
+              0.23  & 82.93 \\
+              0.24  & 82.97 \\
+              0.25  & \textbf{82.99} \\
+              0.26  & 82.93 \\
+              0.27  & 82.93 \\
+              0.28  & 82.93 \\
+              0.29  & 82.89 \\
+              0.30  & 82.92 \\
+              0.31  & 82.85 \\
+              0.32  & 82.85 \\
+              0.33  & 82.81 \\
+              0.34  & 82.64 \\
+              0.35  & 82.57 \\
+              \bottomrule
+            \end{tabular}
+            \label{tab:dt-con-b}
+          \end{subtable}
+          \begin{subtable}{.32\linewidth}
+            \centering
+            \caption{}
+            \begin{tabular}{c|c}
+              \toprule
+              \multicolumn{1}{l|}{Confidence} & \multicolumn{1}{l}{Accuracy (\%)} \\
+              \midrule
+              0.245 & 82.97 \\
+              0.246 & 82.98 \\
+              0.247 & \textbf{82.99} \\
+              0.248 & \textbf{82.99} \\
+              0.249 & \textbf{82.99} \\
+              0.250 & \textbf{82.99} \\
+              0.251 & 82.96 \\
+              0.252 & 82.93 \\
+              0.253 & 82.93 \\
+              0.254 & 82.93 \\
+              0.255 & 82.93 \\
+              \bottomrule
+            \end{tabular}
+          \label{tab:dt-con-c}
+          \end{subtable}
+        \label{tab:dt-con}
+      \end{table}
+      \doublespacing
 
+      Tables \ref{tab:dt-minobj-a} and \ref{tab:dt-minobj-b} show the process of finding the optimal parameter value for the minimum number of objects, with the confidence value set to the optimal 0.247. Specifically table \ref{tab:dt-minobj-b} shows that the optimal value is 52 with an accuracy score of 83.95. As this parameter is an integer scale there is no way to process smaller intervals.
 
-% Table generated by Excel2LaTeX from sheet 'Sheet1'
-\begin{table}[htbp]
-  \centering
-  \caption{Minimum number of objects highest classification 1 (C=0.3)}
-    \begin{tabular}{c|r}
-    \toprule
-    \multicolumn{1}{l|}{Min Objects} & \multicolumn{1}{l}{Accuracy} \\
-    \midrule
-    2     & 82.33 \\
-    5     & 82.3 \\
-    10    & 82.24 \\
-    15    & 82.54 \\
-    18    & 82.83 \\
-    19    & 82.99 \\
-    20    & 83 \\
-    21    & 83.04 \\
-    22    & 82.98 \\
-    30    & 83.16 \\
-    35    & 83.53 \\
-    40    & 83.73 \\
-    45    & 83.8 \\
-    50    & \textbf{83.82} \\
-    60    & 83.04 \\
-    70    & 82.82 \\
-    \bottomrule
-    \end{tabular}%
-  \label{tab:addlabel}%
-\end{table}%
+      \singlespacing
+      \begin{table}[H]
+        \caption{Minumum Number of Objects tuning}
+        \begin{subtable}{.5\linewidth}
+          \centering
+          \caption{}
+          \begin{tabular}{c|c}
+          \toprule
+          \multicolumn{1}{l|}{Min Objects} & \multicolumn{1}{l}{Accuracy (\%)} \\
+          \midrule
+          2     & 82.99 \\
+          5     & 82.99 \\
+          10    & 83.05 \\
+          15    & 83.56 \\
+          20    & 83.67 \\
+          25    & 83.71 \\
+          30    & 83.60 \\
+          35    & 83.75 \\
+          40    & 83.75 \\
+          45    & 83.83 \\
+          50    & \textbf{83.90} \\
+          55    & 83.07 \\
+          60    & 81.79 \\
+          65    & 81.79 \\
+          70    & 81.78 \\
+          75    & 81.83 \\
+          80    & 81.83 \\
+          85    & 81.83 \\
+          90    & 81.83 \\
+          95    & 81.83 \\
+          100   & 81.83 \\
+          \bottomrule
+          \end{tabular}
+          \label{tab:dt-minobj-a}
+        \end{subtable}
+        \begin{subtable}{.5\linewidth}
+          \centering
+          \caption{}
+          \begin{tabular}{c|c}
+            \toprule
+            \multicolumn{1}{l|}{Min Objects} & \multicolumn{1}{l}{Accuracy (\%)} \\
+            \midrule
+            45    & 83.83 \\
+            46    & 83.80 \\
+            47    & 83.86 \\
+            48    & 83.91 \\
+            49    & 83.90 \\
+            50    & 83.90 \\
+            51    & 83.94 \\
+            52    & \textbf{83.95} \\
+            53    & 83.85 \\
+            54    & 83.66 \\
+            55    & 83.07 \\
+            \bottomrule
+            \end{tabular}
+          \label{tab:dt-minobj-b}
+        \end{subtable}
+        \label{tab:dt-minobj}
+      \end{table}
+      \doublespacing
 
+      Tables \ref{tab:dt-minobj-prun-a} and \ref{tab:dt-minobj-prun-b} show the process of finding the most pruned tree which is not significantly worse than the tree with the highest classification accuracy which was found in the previous paragraph. Specifically table \ref{tab:dt-minobj-prun-b} shows that the most pruned tree which is not significantly worse is one with 56 minumum number of objects. Again this parameter is an integer scale so there is no way to find smaller intervals.
 
-\begin{table}[htbp]
-  \centering
-  \caption{Learning rate accuracy from 200-3000 epochs}
-    \begin{tabular}{r|rrrrr}
-    \toprule
-    \multicolumn{1}{r}{} & \multicolumn{5}{|c}{Learning Rate} \\
-    & 0.1   & 0.3   & 0.5   & 0.7   & 0.9 \\
-    \midrule
-        Epochs & \multicolumn{5}{|c}{Accuracy (\%)} \\
-    \midrule
-    200   & \textbf{81.19} & 80.72 & 80.49 & 80.21 & 79.93 \\
-    250   & 80.19 & \textbf{80.99} & 80.58 & 80.39 & 79.97 \\
-    350   & 81.27 & \textbf{81.36} & 81.01 & 80.5  & 80.2 \\
-    450   & 81.49 & \textbf{81.52} & 80.87 & 80.55 & 80.39 \\
-    550   & \textbf{81.72} & 81.56 & 81.13 & 81.08 & 80.74 \\
-    650   & \textbf{82.05} & 81.7  & 81.34 & 81.27 & 80.92 \\
-    750   & \textbf{82.04} & 81.68 & 81.59 & 81.37 & 81.14 \\
-    850   & \textbf{82.16} & 81.77 & 81.76 & 81.52 & 81.16 \\
-    950   & \textbf{82.12} & 81.9  & 81.71 & 81.66 & 81.32 \\
-    1050  & \textbf{82.13} & 81.96 & 81.84 & 81.77 & 81.28 \\
-    1150  & 81.99 & \textbf{82} & 81.8  & 81.81 & 81.34 \\
-    1500  & 82.08 & \textbf{82.22} & 81.84 & 81.92 & 81.5 \\
-    2000  & 82.23 & \textbf{82.32} & 81.88 & 81.94 & 81.74 \\
-    3000  & \textbf{82.25} & 82.24 & 81.84 & 81.86 & 81.69 \\
-    \bottomrule
-    \end{tabular}%
-  \label{tab:addlabel}%
-\end{table}%
+      \singlespacing
+      \begin{table}[H]
+        \caption{Finding the most pruned tree}
+        \begin{subtable}{.5\linewidth}
+          \centering
+          \caption{}
+          \begin{tabular}{c|c}
+            \toprule
+            \multicolumn{1}{l|}{Min Objects} & \multicolumn{1}{l}{Accuracy (\%)} \\
+            \midrule
+            52    & \textbf{83.95} \\
+            \midrule
+            50    & 83.90 \\
+            60    & 81.79 * \\
+            70    & 81.78 * \\
+            80    & 81.83 * \\
+            90    & 81.83 * \\
+            100   & 81.83 * \\
+            110   & 81.77 * \\
+            120   & 81.47 * \\
+            130   & 81.49 * \\
+            140   & 81.49 * \\
+            150   & 81.49 * \\
+            \bottomrule
+          \end{tabular}
+        \label{tab:dt-minobj-prun-a}
+        \end{subtable}
+        \begin{subtable}{.5\linewidth}
+          \centering
+          \caption{}
+          \begin{tabular}{c|c}
+            \toprule
+            \multicolumn{1}{l|}{Min Objects} & \multicolumn{1}{l}{Accuracy (\%)} \\
+            \midrule
+            52    & \textbf{83.95} \\
+            \midrule
+            50    & 83.90 \\
+            51    & 83.94 \\
+            53    & 83.85 \\
+            54    & 83.66 \\
+            55    & 83.07 \\
+            56    & 82.47 \\
+            57    & 82.08 * \\
+            58    & 81.83 * \\
+            59    & 81.83 * \\
+            60    & 81.79 * \\
+            \bottomrule
+          \end{tabular}
+          \label{tab:dt-minobj-prun-b}
+        \end{subtable}
+        \label{tab:dt-minobj-prun}
+      \end{table}
+      \doublespacing
 
-\begin{table}[htbp]
-  \centering
-  \caption{Momentum accuracy from 200-3000 epochs (LR=0.4, HL=A)}
-    \begin{tabular}{r|rrrrr}
-    \toprule
-          & \multicolumn{5}{c}{Momentum} \\
-    \midrule
-    \multicolumn{1}{l|}{Epochs} & 0.1   & 0.3   & 0.5   & 0.7   & 0.9 \\
-    \midrule
-    200   & 80.59 & \textbf{80.66} & 80.24 & 79.92 & 79.31 \\
-    300   & \textbf{81.07} & 80.96 & 80.55 & 80.46 & 79.34 \\
-    400   & \textbf{81.31} & 81.17 & 80.68 & 80.55 & 79.49 \\
-    500   & 81.33 & \textbf{81.36} & 80.96 & 80.72 & 79.39 \\
-    600   & 81.45 & \textbf{81.51} & 81.22 & 80.98 & 79.5 \\
-    700   & 81.55 & \textbf{81.64} & 81.38 & 81.15 & 79.48 \\
-    800   & 81.52 & \textbf{81.71} & 81.52 & 81.41 & 79.52 \\
-    900   & 81.69 & \textbf{81.72} & 81.53 & 81.46 & 79.38 \\
-    1000  & \textbf{81.85} & 81.78 & 81.55 & 81.42 & 79.46 \\
-    1100  & 81.89 & \textbf{81.98} & 81.61 & 81.63 & 79.66 \\
-    1500  & \textbf{82.07} & 82.04 & 81.69 & 81.61 & 79.9 \\
-    2000  & \textbf{82.06} & 82.03 & 81.78 & 81.66 & 80.05 \\
-    3000  & 81.98 & \textbf{82.05} & 81.81 & 81.64 & 80 \\
-    \bottomrule
-    \end{tabular}%
-  \label{tab:addlabel}%
-\end{table}%
+  \newpage
 
+  \subsection{Artificial Neural Network}
+    As a result of the information presented in section \ref{ann}, a series of experiments will be carried out to find the optimal parameters for training when an Artificial neural network is used on the mamographical dataset. In this section two network structures will be laid out, the first being the one with a single hidden layer of neurons and the second being one with two hidden layers of neurons.
 
+    \subsubsection{Plan}
+      In order to find the best structure for an ANN with both 1 and 2 hidden layers of neurons, first the optimal learning parameters must be found. To do this a series of experiments must be run with different learning rate and momentum values, each over a long series of training times. At first intervals of 0.2 will be used between learning rate / momentum values as the more optimal value can be determined once the best training time is found.
 
-\begin{table}[htbp]
-  \centering
-  \caption{Two hidden layer ANN structure (LR=0.4, M=0.2, E=950)}
-    \begin{tabular}{c|rrrrr}
-      \toprule
-        & \multicolumn{5}{c}{Second Layer Neurons} \\
-      \midrule
-        \multicolumn{1}{c|}{First Layer Neurons} & 1     & 2     & 3     & 4     & 5 \\
-      \midrule
-        1 & 82.34 & 82.25 & 82.43 & 82.64 & \textbf{82.67} \\
-        2 & 81.78 & 81.89 & 82.29 & 82.06 & \textbf{82.38} \\
-        3 & 81.02 & 81.32 & 81.79 & 81.96 & \textbf{82.01} \\
-        4 & 80.66 & 81.38 & 80.92 & 80.99 & \textbf{81.07} \\
-        5 & 80.55 & 80.53 & \textbf{81.29} & 81.02 & 80.7 \\
-      \bottomrule
-    \end{tabular}%
-  \label{tab:addlabel}%
-\end{table}%
+      Once the optimal training parameters are found another series of experiments with different combinations of ANN structures will be carried out, which make use of the training parameters found in the previous experiments.
 
+    \subsubsection{Execution}
+      Table \ref{tab:ann-lr-a} shows that the best learning rate over the majority of training times is 0.1, and that a training time of 700 epochs is the most optimal time with an accuracy of 82.63. Using this as a basis, table \ref{tab:ann-lr-b} shows a wider scope of learning rates where it can be observed that 0.1 is still the most optimal value. Table \ref{tab:ann-lr-c} shows finer intervals around the 0.1 value and again highlights that it is still the best value. Finally, table \ref{tab:ann-lr-d} shows the two neighbor values which still give lower scores than the 0.1 value. Therefore it is proven that 0.1 is the optimal learning rate value.
 
-\begin{table}[htbp]
-  \centering
-  \caption{Learning rate impact on accuracy from 250-3000 epochs (M=0.2, HL=1)}
-    \begin{tabular}{r|rrrrr}
-    \toprule
-          & \multicolumn{5}{c}{Learning Rate} \\
-    \midrule
-    \multicolumn{1}{l|}{Epochs} & 0.1   & 0.3   & 0.5   & 0.7   & 0.9 \\
-    \midrule
-    250   & 81.73 & \textbf{81.88} & 81.85 & 81.87 & 81.8 \\
-    350   & \textbf{82.27} & 82.24 & 82.21 & 82.19 & 82.23 \\
-    450   & \textbf{82.58} & 82.49 & 82.39 & 82.33 & 82.35 \\
-    550   & 82.55 & \textbf{82.61} & 82.58 & 82.41 & 82.33 \\
-    650   & \textbf{82.73} & 82.7  & 82.72 & 82.66 & 82.45 \\
-    750   & 82.77 & 82.8  & \textbf{82.83} & 82.74 & 82.5 \\
-    850   & 82.79 & \textbf{82.93} & 82.88 & 82.66 & 82.5 \\
-    950   & 82.89 & \textbf{83} & 82.87 & 82.78 & 82.55 \\
-    1050  & 82.9  & \textbf{83} & 82.89 & 82.83 & 82.61 \\
-    1150  & 82.89 & \textbf{83} & 82.87 & 82.88 & 82.69 \\
-    1500  & 82.98 & 82.99 & \textbf{83.09} & 83    & 82.87 \\
-    2000  & 83.08 & 83.15 & \textbf{83.19} & 83.14 & 83 \\
-    3000  & \textbf{83.25} & 83.19 & 83.21 & 83.18 & 83.01 \\
-    \bottomrule
-    \end{tabular}%
-  \label{tab:addlabel}%
-\end{table}%
+      \singlespacing
+      \begin{table}[H]
+        \centering
+        \caption{Add caption}
+        \begin{subtable}{.49\linewidth}
+          \centering
+          \caption{}
+          \begin{tabular}{c|ccccc}
+            \toprule
+                  & \multicolumn{5}{c}{Learning Rate} \\
+            \midrule
+                  & \multicolumn{1}{c|}{0.1} & \multicolumn{1}{c|}{0.3} & \multicolumn{1}{c|}{0.5} & \multicolumn{1}{c|}{0.7} & 0.9 \\
+            \midrule
+            Epochs & \multicolumn{5}{c}{Accuracy (\%)} \\
+            \midrule
+            100   & \textbf{82.3} & 82.29 & 82.13 & 81.84 & 81.79 \\
+            200   & 82.31 & \textbf{82.33} & 82.17 & 81.87 & 81.85 \\
+            300   & \textbf{82.47} & 82.39 & 82.04 & 81.9  & 81.63 \\
+            400   & \textbf{82.53} & 82.37 & 81.93 & 81.8  & 81.54 \\
+            500   & \textbf{82.54} & 82.36 & 81.88 & 81.75 & 81.56 \\
+            600   & \textbf{82.6} & 82.27 & 81.86 & 81.72 & 81.54 \\
+            700   & \textbf{82.63} & 82.21 & 81.83 & 81.68 & 81.58 \\
+            800   & \textbf{82.62} & 82.18 & 81.83 & 81.61 & 81.5 \\
+            900   & \textbf{82.62} & 82.15 & 81.8  & 81.62 & 81.45 \\
+            1000  & \textbf{82.6} & 82.12 & 81.79 & 81.6  & 81.37 \\
+            1100  & \textbf{82.54} & 82.1  & 81.78 & 81.59 & 81.36 \\
+            1200  & \textbf{82.55} & 82.08 & 81.77 & 81.56 & 81.31 \\
+            1300  & \textbf{82.53} & 82.06 & 81.73 & 81.52 & 81.28 \\
+            1400  & \textbf{82.53} & 82.01 & 81.72 & 81.5  & 81.27 \\
+            1500  & \textbf{82.52} & 82.01 & 81.73 & 81.46 & 81.25 \\
+            1600  & \textbf{82.53} & 81.96 & 81.71 & 81.43 & 81.23 \\
+            1700  & \textbf{82.51} & 81.89 & 81.73 & 81.4  & 81.24 \\
+            1800  & \textbf{82.51} & 81.92 & 81.73 & 81.44 & 81.26 \\
+            1900  & \textbf{82.51} & 81.9  & 81.76 & 81.44 & 81.27 \\
+            2000  & \textbf{82.5} & 81.93 & 81.78 & 81.46 & 81.22 \\
+            \bottomrule
+          \end{tabular}
+          \label{tab:ann-lr-a}
+        \end{subtable}
+        \begin{subtable}{.49\linewidth}
+          \centering
+          \caption{With training time at 700}
+          \begin{tabular}{c|r}
+            \toprule
+            \multicolumn{1}{l|}{Learning Rate} & \multicolumn{1}{l}{Accuracy (\%)} \\
+            \midrule
+            0.1   & \textbf{82.63} \\
+            0.2   & 82.51 \\
+            0.3   & 82.21 \\
+            0.4   & 81.99 \\
+            0.5   & 81.83 \\
+            0.6   & 81.72 \\
+            0.7   & 81.68 \\
+            0.8   & 81.62 \\
+            0.9   & 81.58 \\
+            1.0   & 81.73 \\
+            \bottomrule
+          \end{tabular}
+          \label{tab:ann-lr-b}
+        \end{subtable}
+        \begin{subtable}{.49\linewidth}
+          \centering
+          \caption{With training time at 700}
+          \begin{tabular}{c|c}
+            \toprule
+            \multicolumn{1}{l|}{Learning Rate} & \multicolumn{1}{l}{Accuracy (\%)} \\
+            \midrule
+            0.02  & 82.4 \\
+            0.04  & 82.38 \\
+            0.06  & 82.56 \\
+            0.08  & 82.58 \\
+            0.1   & \textbf{82.63} \\
+            0.12  & 82.59 \\
+            0.14  & 82.54 \\
+            0.16  & 82.47 \\
+            0.18  & 82.52 \\
+            \bottomrule
+          \end{tabular}
+          \label{tab:ann-lr-c}
+        \end{subtable}
+        \begin{subtable}{.49\linewidth}
+          \centering
+          \caption{With training time at 700}
+          \begin{tabular}{c|c}
+            \toprule
+            \multicolumn{1}{l|}{Learning Rate} & \multicolumn{1}{l}{Accuracy (\%)} \\
+            \midrule
+            0.09  & 82.6 \\
+            0.1   & \textbf{82.63} \\
+            0.11  & 82.59 \\
+            \bottomrule
+          \end{tabular}
+          \label{tab:ann-lr-d}
+        \end{subtable}
+        \label{tab:ann-lr}
+      \end{table}
+      \doublespacing
 
+      Table \ref{tab:ann-m-a} shows a similar experiment to that in table \ref{tab:ann-lr-a}, however this time with momentum as the variable parameter and with learning rate set to its optimal value of 0.1. It can be seen that 0.1 is the most common optimal value over the majority of training times. Furthermore it can be seen that a training time of 900 epochs yields the highest classification accuracy of 82.61 with a momentum value of 0.1. Using this as a basis some further experiments with smaller training time intervals is seen in \textbf{TODO}, with 920 being the standout optimal training time.
 
+      The next two tables (\ref{tab:ann-m-b} \& \ref{tab:ann-m-c}) show the discovery of the most optimal momentum value when the training time is set to 920 epochs. The optimal value which can be seen in these results is 0.17 with an accuracy score of 82.65. As the accuracy results in table \ref{tab:ann-m-c} appear to repeat at this interval size, it can be concluded that no smaller intervals need be investigated.
 
-  % • Plan for DT experiments, with justification
+      \singlespacing
+      \begin{table}[H]
+        \caption{Add caption}
+        \begin{subtable}{.49\linewidth}
+          \centering
+          \caption{}
+          \begin{tabular}{c|ccccc}
+            \toprule
+                  & \multicolumn{5}{c}{Momentum} \\
+            \midrule
+                  & \multicolumn{1}{c|}{0.1} & \multicolumn{1}{c|}{0.3} & \multicolumn{1}{c|}{0.5} & \multicolumn{1}{c|}{0.7} & 0.9 \\
+            \midrule
+            Epochs & \multicolumn{5}{c}{Accuracy (\%)} \\
+            \midrule
+            100   & \textbf{82.44} & 82.34 & 82.30 & 82.34 & 81.80 \\
+            200   & 82.34 & 82.35 & \textbf{82.45} & 82.33 & 81.75 \\
+            300   & 82.42 & 82.45 & \textbf{82.56} & 82.33 & 81.80 \\
+            400   & 82.55 & 82.49 & \textbf{82.60} & 82.30 & 81.75 \\
+            500   & \textbf{82.58} & 82.54 & 82.50 & 82.30 & 81.75 \\
+            600   & \textbf{82.58} & 82.56 & 82.47 & 82.26 & 81.72 \\
+            700   & \textbf{82.60} & 82.57 & 82.43 & 82.19 & 81.64 \\
+            800   & \textbf{82.58} & 82.53 & 82.46 & 82.16 & 81.65 \\
+            900   & \textbf{82.61} & 82.55 & 82.46 & 82.11 & 81.52 \\
+            1000  & \textbf{82.61} & 82.53 & 82.43 & 82.07 & 81.48 \\
+            1100  & \textbf{82.58} & 82.55 & 82.4  & 82.05 & 81.46 \\
+            1200  & \textbf{82.57} & 82.52 & 82.36 & 82.01 & 81.45 \\
+            1300  & \textbf{82.56} & 82.55 & 82.31 & 81.98 & 81.45 \\
+            1400  & \textbf{82.55} & 82.5  & 82.29 & 81.96 & 81.37 \\
+            1500  & \textbf{82.58} & 82.48 & 82.28 & 81.94 & 81.37 \\
+            1600  & \textbf{82.55} & 82.49 & 82.22 & 81.94 & 81.37 \\
+            1700  & \textbf{82.52} & 82.47 & 82.18 & 81.95 & 81.38 \\
+            1800  & \textbf{82.51} & 82.46 & 82.19 & 81.94 & 81.33 \\
+            1900  & \textbf{82.49} & 82.44 & 82.17 & 81.93 & 81.31 \\
+            2000  & \textbf{82.48} & 82.4  & 82.18 & 81.92 & 81.31 \\
+            \bottomrule
+          \end{tabular}
+          \label{tab:ann-m-a}
+        \end{subtable}
+        \begin{subtable}{.49\linewidth}
+          \centering
+          \caption{With training time at 920}
+          \begin{tabular}{c|c}
+            \toprule
+            \multicolumn{1}{l|}{Momentum} & \multicolumn{1}{l}{Accuracy (\%)} \\
+            \midrule
+            0.1   & \textbf{82.62} \\
+            0.2   & 82.60 \\
+            0.3   & 82.55 \\
+            0.4   & 82.44 \\
+            0.5   & 82.45 \\
+            0.6   & 82.38 \\
+            0.7   & 82.08 \\
+            0.8   & 82.02 \\
+            0.9   & 81.52 \\
+            1.0   & 52.62 * \\
+            \bottomrule
+          \end{tabular}
+          \label{tab:ann-m-b}
+        \end{subtable}
+        \begin{subtable}{.49\linewidth}
+          \centering
+          \caption{With training time at 920}
+            \begin{tabular}{c|c}
+              \toprule
+              \multicolumn{1}{l|}{Momentum} & \multicolumn{1}{l}{Accuracy (\%)} \\
+              \midrule
+              0.01  & 82.57 \\
+              0.03  & 82.57 \\
+              0.05  & 82.61 \\
+              0.07  & 82.61 \\
+              0.09  & 82.62 \\
+              0.11  & 82.61 \\
+              0.13  & 82.62 \\
+              0.15  & 82.64 \\
+              0.17  & \textbf{82.65} \\
+              0.19  & \textbf{82.65} \\
+              \bottomrule
+            \end{tabular}%
+            \label{tab:ann-m-c}
+        \end{subtable}
+        \label{tab:ann-m}
+      \end{table}
+      \doublespacing
 
-  %   (a) Execution of DT experiments to find DT with highest Classification Accuracy
+      The final experiments to be completed are those which identify the best structure for the ANN. Table \ref{tab:ann-str-single} shows that the best structure for 1 hidden layer is one with 3 neurons, which gives a classification accuracy of 82.65. As the results do not improve significantly above 10 neurons there are no further experiments for 1 hidden layer. Table \ref{tab:ann-str-double} shows that the best structure for 2 hidden layers is \textbf{TODO}, once again as the results do not improve significantly there are no further experiments past 10 neurons in each hidden layer.
 
-  %   (b) Execution of DT experiments to find the most highly pruned DT that does not have a significantly lower Classification Accuracy than the tree with best CA.
+      \singlespacing
+      \begin{table}[H]
+        \centering
+        \caption{One hidden layer}
+        \begin{tabular}{c|c}
+          \toprule
+          Layer 1 & Accuracy (\%) \\
+          \midrule
+          1     & 81.83 \\
+          2     & 81.98 \\
+          3     & \textbf{82.65} \\
+          4     & 81.80 \\
+          5     & 82.10 \\
+          6     & 82.25 \\
+          7     & 82.05 \\
+          8     & 82.10 \\
+          9     & 81.88 \\
+          10    & 81.95 \\
+          \bottomrule
+        \end{tabular}
+        \label{tab:ann-str-single}
+      \end{table}
+      \begin{table}[H]
+        \centering
+        \caption{Two hidden layers}
+        \begin{tabular}{c|cccccccccc}
+          \toprule
+                & \multicolumn{10}{c}{Layer 2} \\
+          Layer 1 & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{3} & \multicolumn{1}{c}{4} & \multicolumn{1}{c}{5} & \multicolumn{1}{c}{6} & \multicolumn{1}{c}{7} & \multicolumn{1}{c}{8} & \multicolumn{1}{c}{9} & \multicolumn{1}{c}{10} \\
+          \midrule
+          1     & \multicolumn{1}{c}{81.73} & \multicolumn{1}{c}{81.76} & \multicolumn{1}{c}{81.74} & \multicolumn{1}{c}{81.78} & \multicolumn{1}{c}{81.78} &       &       &       &       &  \\
+          2     & \multicolumn{1}{c}{82.14} & \multicolumn{1}{c}{82.00} & \multicolumn{1}{c}{81.84} & \multicolumn{1}{c}{81.88} & \multicolumn{1}{c}{81.84} &       &       &       &       &  \\
+          3     & \multicolumn{1}{c}{82.12} & \multicolumn{1}{c}{82.10} & \multicolumn{1}{c}{82.24} & \multicolumn{1}{c}{82.20} & \multicolumn{1}{c}{82.58} &       &       &       &       &  \\
+          4     & \multicolumn{1}{c}{82.37} & \multicolumn{1}{c}{82.56} & \multicolumn{1}{c}{82.46} & \multicolumn{1}{c}{82.57} & \multicolumn{1}{c}{82.46} &       &       &       &       &  \\
+          5     & \multicolumn{1}{c}{82.36} & \multicolumn{1}{c}{82.63} & \multicolumn{1}{c}{82.61} & \multicolumn{1}{c}{82.62} & \multicolumn{1}{c}{82.79} &       &       &       &       &  \\
+          6     &       &       &       &       &       &       &       &       &       &  \\
+          7     &       &       &       &       &       &       &       &       &       &  \\
+          8     &       &       &       &       &       &       &       &       &       &  \\
+          9     &       &       &       &       &       &       &       &       &       &  \\
+          10    &       &       &       &       &       &       &       &       &       & 82.70 \\
+          \bottomrule
+        \end{tabular}
+        \label{tab:ann-str-double}
+      \end{table}
+      \doublespacing
 
-  % • Plan for artificial neural network experiments, with justification
-
-  %   (a) Execution of artificial neural network experiments to find artificial neural network with highest classification accuracy using a single layer of neurons
-
-  %   (b) Execution of artificial neural network experiments to find artificial neural network with highest classification accuracy using a multiple layers of neurons (Individual student judgement to be used on how many layers to be used).
-
-
-\section{Advanced Pre-processing}
-  % • Experiments with different methods of pre-processing the data (scaling, grouping, conversion etc.). This work could contribute marks for work reaching the 86%+ mark band). The section may be omitted if you do not anticipate reaching such a mark.
-
-% http://yatani.jp/HCIstats/PCA
 \section{Conclusions}
-  % • A description of the best (pruned) decision tree for the dataset (including number of nodes, leaves, pruning parameters etc.).
+  \subsection{Best Decision Tree}
+    As discovered in section \ref{dt-execution}, the best pruned decision tree is the same as the one with the highest classification accuracy.
 
-  % • A diagram of the best pruned decision tree for the dataset.
+    % • A description of the best (pruned) decision tree for the dataset (including number of nodes, leaves, pruning parameters etc.).
 
-  % • A description of the best artificial neural network for the dataset (numbers of neurons, layers etc.)
+    % Number of Leaves :	7
+    % Size of the tree : 	10
+    % Confidence = 0.247
+    % MinNumObj = 52
 
-  % • A summary table of best classifiers
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=\textwidth]{best-pruned-tree}
+      \caption{Best pruned decision tree}
+      \label{fig:best-pruned-tree}
+    \end{figure}
 
-  % • A diagram of the best artificial neural network for the dataset.
 
-  % • A statement of which performed best and therefore which you would recommend to the client to solve the task
+  \subsection{Best Artificial Neural Network}
+    % • A description of the best artificial neural network for the dataset (numbers of neurons, layers etc.)
 
+    % • A summary table of best classifiers
+
+    % • A diagram of the best artificial neural network for the dataset.
+
+  \subsection{Classifier recommendation}
+    The classifier which provided the highest classification accuracy is the J.48 decision tree (see section \ref{dt-execution}), which gave an accuracy score of 83.95. Furthermore the decision tree takes much less time to both train and classify therefore it is highly recommended that the client uses the decision tree for the task of classifying mamographical data.
+
+  \subsubsection{Analysis}
   % • Short analysis or discussion of results
 
 \newpage
 
 \bibliographystyle{agsm}
 \bibliography{report-jim}
+
+% \begin{table}[htbp]
+%   \centering
+%   \caption{Confidence (MO=2)}
+%     \begin{tabular}{c|r}
+%     \toprule
+%     \multicolumn{1}{l|}{Confidence} & \multicolumn{1}{l}{Accuracy} \\
+%     \midrule
+%     0.05  & 82.2 \\
+%     0.1   & 82.16 \\
+%     0.15  & 82.19 \\
+%     0.2   & 82.27 \\
+%     0.25  & 82.19 \\
+%     0.3   & \textbf{82.33} \\
+%     0.35  & 82.31 \\
+%     0.4   & 82.12 \\
+%     \bottomrule
+%     \end{tabular}%
+%   \label{tab:addlabel}%
+% \end{table}%
+%
+%
+% % Table generated by Excel2LaTeX from sheet 'Sheet1'
+% \begin{table}[htbp]
+%   \centering
+%   \caption{Minimum number of objects highest classification 1 (C=0.3)}
+%     \begin{tabular}{c|r}
+%     \toprule
+%     \multicolumn{1}{l|}{Min Objects} & \multicolumn{1}{l}{Accuracy} \\
+%     \midrule
+%     2     & 82.33 \\
+%     5     & 82.3 \\
+%     10    & 82.24 \\
+%     15    & 82.54 \\
+%     18    & 82.83 \\
+%     19    & 82.99 \\
+%     20    & 83 \\
+%     21    & 83.04 \\
+%     22    & 82.98 \\
+%     30    & 83.16 \\
+%     35    & 83.53 \\
+%     40    & 83.73 \\
+%     45    & 83.8 \\
+%     50    & \textbf{83.82} \\
+%     60    & 83.04 \\
+%     70    & 82.82 \\
+%     \bottomrule
+%     \end{tabular}%
+%   \label{tab:addlabel}%
+% \end{table}%
+%
+%
+% \begin{table}[htbp]
+%   \centering
+%   \caption{Learning rate accuracy from 200-3000 epochs}
+%     \begin{tabular}{r|rrrrr}
+%     \toprule
+%     \multicolumn{1}{r}{} & \multicolumn{5}{|c}{Learning Rate} \\
+%     & 0.1   & 0.3   & 0.5   & 0.7   & 0.9 \\
+%     \midrule
+%         Epochs & \multicolumn{5}{|c}{Accuracy (\%)} \\
+%     \midrule
+%     200   & \textbf{81.19} & 80.72 & 80.49 & 80.21 & 79.93 \\
+%     250   & 80.19 & \textbf{80.99} & 80.58 & 80.39 & 79.97 \\
+%     350   & 81.27 & \textbf{81.36} & 81.01 & 80.5  & 80.2 \\
+%     450   & 81.49 & \textbf{81.52} & 80.87 & 80.55 & 80.39 \\
+%     550   & \textbf{81.72} & 81.56 & 81.13 & 81.08 & 80.74 \\
+%     650   & \textbf{82.05} & 81.7  & 81.34 & 81.27 & 80.92 \\
+%     750   & \textbf{82.04} & 81.68 & 81.59 & 81.37 & 81.14 \\
+%     850   & \textbf{82.16} & 81.77 & 81.76 & 81.52 & 81.16 \\
+%     950   & \textbf{82.12} & 81.9  & 81.71 & 81.66 & 81.32 \\
+%     1050  & \textbf{82.13} & 81.96 & 81.84 & 81.77 & 81.28 \\
+%     1150  & 81.99 & \textbf{82} & 81.8  & 81.81 & 81.34 \\
+%     1500  & 82.08 & \textbf{82.22} & 81.84 & 81.92 & 81.5 \\
+%     2000  & 82.23 & \textbf{82.32} & 81.88 & 81.94 & 81.74 \\
+%     3000  & \textbf{82.25} & 82.24 & 81.84 & 81.86 & 81.69 \\
+%     \bottomrule
+%     \end{tabular}%
+%   \label{tab:addlabel}%
+% \end{table}%
+%
+% \begin{table}[htbp]
+%   \centering
+%   \caption{Momentum accuracy from 200-3000 epochs (LR=0.4, HL=A)}
+%     \begin{tabular}{r|rrrrr}
+%     \toprule
+%           & \multicolumn{5}{c}{Momentum} \\
+%     \midrule
+%     \multicolumn{1}{l|}{Epochs} & 0.1   & 0.3   & 0.5   & 0.7   & 0.9 \\
+%     \midrule
+%     200   & 80.59 & \textbf{80.66} & 80.24 & 79.92 & 79.31 \\
+%     300   & \textbf{81.07} & 80.96 & 80.55 & 80.46 & 79.34 \\
+%     400   & \textbf{81.31} & 81.17 & 80.68 & 80.55 & 79.49 \\
+%     500   & 81.33 & \textbf{81.36} & 80.96 & 80.72 & 79.39 \\
+%     600   & 81.45 & \textbf{81.51} & 81.22 & 80.98 & 79.5 \\
+%     700   & 81.55 & \textbf{81.64} & 81.38 & 81.15 & 79.48 \\
+%     800   & 81.52 & \textbf{81.71} & 81.52 & 81.41 & 79.52 \\
+%     900   & 81.69 & \textbf{81.72} & 81.53 & 81.46 & 79.38 \\
+%     1000  & \textbf{81.85} & 81.78 & 81.55 & 81.42 & 79.46 \\
+%     1100  & 81.89 & \textbf{81.98} & 81.61 & 81.63 & 79.66 \\
+%     1500  & \textbf{82.07} & 82.04 & 81.69 & 81.61 & 79.9 \\
+%     2000  & \textbf{82.06} & 82.03 & 81.78 & 81.66 & 80.05 \\
+%     3000  & 81.98 & \textbf{82.05} & 81.81 & 81.64 & 80 \\
+%     \bottomrule
+%     \end{tabular}%
+%   \label{tab:addlabel}%
+% \end{table}%
+%
+%
+%
+% \begin{table}[htbp]
+%   \centering
+%   \caption{Two hidden layer ANN structure (LR=0.4, M=0.2, E=950)}
+%     \begin{tabular}{c|rrrrr}
+%       \toprule
+%         & \multicolumn{5}{c}{Second Layer Neurons} \\
+%       \midrule
+%         \multicolumn{1}{c|}{First Layer Neurons} & 1     & 2     & 3     & 4     & 5 \\
+%       \midrule
+%         1 & 82.34 & 82.25 & 82.43 & 82.64 & \textbf{82.67} \\
+%         2 & 81.78 & 81.89 & 82.29 & 82.06 & \textbf{82.38} \\
+%         3 & 81.02 & 81.32 & 81.79 & 81.96 & \textbf{82.01} \\
+%         4 & 80.66 & 81.38 & 80.92 & 80.99 & \textbf{81.07} \\
+%         5 & 80.55 & 80.53 & \textbf{81.29} & 81.02 & 80.7 \\
+%       \bottomrule
+%     \end{tabular}%
+%   \label{tab:addlabel}%
+% \end{table}%
+%
+%
+% \begin{table}[htbp]
+%   \centering
+%   \caption{Learning rate impact on accuracy from 250-3000 epochs (M=0.2, HL=1)}
+%     \begin{tabular}{r|rrrrr}
+%     \toprule
+%           & \multicolumn{5}{c}{Learning Rate} \\
+%     \midrule
+%     \multicolumn{1}{l|}{Epochs} & 0.1   & 0.3   & 0.5   & 0.7   & 0.9 \\
+%     \midrule
+%     250   & 81.73 & \textbf{81.88} & 81.85 & 81.87 & 81.8 \\
+%     350   & \textbf{82.27} & 82.24 & 82.21 & 82.19 & 82.23 \\
+%     450   & \textbf{82.58} & 82.49 & 82.39 & 82.33 & 82.35 \\
+%     550   & 82.55 & \textbf{82.61} & 82.58 & 82.41 & 82.33 \\
+%     650   & \textbf{82.73} & 82.7  & 82.72 & 82.66 & 82.45 \\
+%     750   & 82.77 & 82.8  & \textbf{82.83} & 82.74 & 82.5 \\
+%     850   & 82.79 & \textbf{82.93} & 82.88 & 82.66 & 82.5 \\
+%     950   & 82.89 & \textbf{83} & 82.87 & 82.78 & 82.55 \\
+%     1050  & 82.9  & \textbf{83} & 82.89 & 82.83 & 82.61 \\
+%     1150  & 82.89 & \textbf{83} & 82.87 & 82.88 & 82.69 \\
+%     1500  & 82.98 & 82.99 & \textbf{83.09} & 83    & 82.87 \\
+%     2000  & 83.08 & 83.15 & \textbf{83.19} & 83.14 & 83 \\
+%     3000  & \textbf{83.25} & 83.19 & 83.21 & 83.18 & 83.01 \\
+%     \bottomrule
+%     \end{tabular}%
+%   \label{tab:addlabel}%
+% \end{table}%
+%
 
 \end{document}
