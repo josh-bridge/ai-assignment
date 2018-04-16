@@ -28,7 +28,7 @@
 
 \newpage
 
-\doublespacing
+\onehalfspacing
 
 \section{Introduction}
   In this report an AI classifier will be put forward which maps mamographical data to desired outputs (diagnoses). In order to do this two types of AI classifiers will be evaluated on their performance in this task, along with relevant pre-processing of the attributes to enhance classifier performance. The two classifier types will be a Decision Tree (J.48) and an Artificial Neural Network (Multilayer Perceptron, \cite{minsky2017perceptrons}). In order to evaluate their performance, considerations of both learning time \& classification accuracy will be taken into account.
@@ -101,7 +101,6 @@
         The acronym BI-RADS stands for “Breast Imaging Reporting and Data System” \citep{american1998breast}. It is a system which was designed to introduce some standardisation into the field of diagnosing breast cancer. The score for BI-RADS is on an ordinal scale from 1 to 5, with 1 being benign and 5 being very likely malignant.
         Below are the 5 definitions of the BI-RADS scale as defined by \cite{american1998breast}.
 
-        \singlespacing
         \begin{enumerate}[label=\arabic*)]
           \item Negative
           \item Benign findings
@@ -109,7 +108,6 @@
           \item Suspicious abnormality
           \item Highly suggesting of malignancy
         \end{enumerate}
-        \doublespacing
 
       \subsubsection{Distribution}
         As shown in figure \ref{fig:birads-both-histogram}, the distribution of BI-RADS scores is non-normal and is skewed to the right.
@@ -232,14 +230,12 @@
       \subsubsection{Measurement}
         This attribute is used to describe the shape of the mass being investigated. It is a nominal attribute as the number scale has no bearing on its meaning. Below are the definitions for each of the shape scores as defined by the dataset.
 
-        \singlespacing
         \begin{enumerate}[label=\arabic*)]
           \item Round
           \item Oval
           \item Lobular
           \item Irregular
         \end{enumerate}
-        \doublespacing
 
         When performing experiments in WEKA, the values in this attribute will be replaced with text values to ensure its processing as a nominal attribute.
 
@@ -278,7 +274,6 @@
       \subsubsection{Measurement}
         The margin attribute is used to describe the edges of the mass and their distinctiveness from the rest of the breast tissue within the scan. This is also a nominal attribute as there is no scale for the margin descriptors. Below are the 5 different definitions for each of the margin scores.
 
-        \singlespacing
         \begin{enumerate}[label=\arabic*)]
           \item Circumscribed
           \item Microlobulated
@@ -286,7 +281,6 @@
           \item Ill-defined
           \item Spiculated
         \end{enumerate}
-        \doublespacing
 
         As with the previous attribute, when performing experiments in WEKA the values in this attribute will be replaced with text values to ensure its processing as a nominal attribute.
 
@@ -325,14 +319,12 @@
       \subsubsection{Measurement}
         This attribute is used to describe the density of the mass on an ordinal scale. A lower score indicates a higher density, which has been shown to be a significant predictor of breast cancer \citep{woods2011mammographic}. Below are the descriptors used to score masses onto the ordinal scale.
 
-        \singlespacing
         \begin{enumerate}[label=\arabic*)]
           \item High
           \item ISO (Isodense)
           \item Low
           \item Fat-containing
         \end{enumerate}
-        \doublespacing
 
       \subsubsection{Distribution}
         As shown in figure \ref{fig:margin-histogram}, the distribution of values in the density attribute appear to be non-normal and skewed to the right.
@@ -423,7 +415,6 @@
     \subsubsection{Execution} \label{dt-execution}
       Tables \ref{tab:dt-con-a}, \ref{tab:dt-con-b} \& \ref{tab:dt-con-c} illustrate the process of finding the optimal confidence parameter value. As seen in table \ref{tab:dt-con-c} the optimal confidence value (with the minimum number of objects parameter set to its default of 2) is 0.247, which gives an accuracy score of 82.99. As many of the accuracy values are repeating with the 3 decimal point intervals seen in table \ref{tab:dt-con-c}, there is no reason to search through smaller intervals.
 
-      \singlespacing
       \begin{table}[H]
           \caption{Confidence tuning}
           \begin{subtable}{.34\linewidth}
@@ -507,11 +498,9 @@
           \end{subtable}%
         \label{tab:dt-con}
       \end{table}
-      \doublespacing
 
       Tables \ref{tab:dt-minobj-a} and \ref{tab:dt-minobj-b} show the process of finding the optimal parameter value for the minimum number of objects, with the confidence value set to the optimal 0.247. Specifically table \ref{tab:dt-minobj-b} shows that the optimal value is 52 with an accuracy score of 83.95. As this parameter is an integer scale there is no way to process smaller intervals.
 
-      \singlespacing
       \begin{table}[H]
         \caption{Minumum Number of Objects tuning}
         \begin{subtable}{.5\linewidth}
@@ -570,11 +559,9 @@
         \end{subtable}
         \label{tab:dt-minobj}
       \end{table}
-      \doublespacing
 
       Tables \ref{tab:dt-minobj-prun-a} and \ref{tab:dt-minobj-prun-b} show the process of finding the most pruned tree which is not significantly worse than the tree with the highest classification accuracy which was found in the previous paragraph. Specifically table \ref{tab:dt-minobj-prun-b} shows that the most pruned tree which is not significantly worse is one with 56 minumum number of objects. Again this parameter is an integer scale so there is no way to find smaller intervals.
 
-      \singlespacing
       \begin{table}[H]
         \caption{Finding the most pruned tree}
         \begin{subtable}{.5\linewidth}
@@ -626,9 +613,6 @@
         \end{subtable}
         \label{tab:dt-minobj-prun}
       \end{table}
-      \doublespacing
-
-  \newpage
 
   \subsection{Artificial Neural Network}
     As a result of the information presented in section \ref{ann}, a series of experiments will be carried out to find the optimal parameters for training when an Artificial neural network is used on the mamographical dataset. In this section two network structures will be laid out, the first being the one with a single hidden layer of neurons and the second being one with two hidden layers of neurons.
@@ -737,7 +721,7 @@
         \end{subtable}
         \label{tab:ann-lr}
       \end{table}
-      \doublespacing
+      \onehalfspacing
 
       Table \ref{tab:ann-m-a} shows a similar experiment to that in table \ref{tab:ann-lr-a}, however this time with momentum as the variable parameter and with learning rate set to its optimal value of 0.1. It can be seen that 0.1 is the most common optimal value over the majority of training times. Furthermore it can be seen that a training time of 900 epochs yields the highest classification accuracy of 82.61 with a momentum value of 0.1. Using this as a basis some further experiments with smaller training time intervals is seen in \textbf{TODO}, with 920 being the standout optimal training time.
 
@@ -825,11 +809,10 @@
         \end{subtable}
         \label{tab:ann-m}
       \end{table}
-      \doublespacing
+      \onehalfspacing
 
       The final experiments to be completed are those which identify the best structure for the ANN. Table \ref{tab:ann-str-single} shows that the best structure for 1 hidden layer is one with 3 neurons, which gives a classification accuracy of 82.65. As the results do not improve significantly above 10 neurons there are no further experiments for 1 hidden layer. Table \ref{tab:ann-str-double} shows that the best structure for 2 hidden layers is \textbf{TODO}, once again as the results do not improve significantly there are no further experiments past 10 neurons in each hidden layer.
 
-      \singlespacing
       \begin{table}[H]
         \centering
         \caption{One hidden layer}
@@ -873,7 +856,6 @@
         \end{tabular}
         \label{tab:ann-str-double}
       \end{table}
-      \doublespacing
 
 \section{Conclusions}
   \subsection{Best Decision Tree}
