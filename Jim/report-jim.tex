@@ -54,26 +54,26 @@
     % https://medium.com/@mohtedibf/indepth-parameter-tuning-for-decision-tree-6753118a03c3
 
   \subsection{Artificial Neural Networks} \label{ann}
-    An Artificial Neural Network is a mathematical system which is able to classify data by performing a series of mathematical functions (activation functions) which take weightings for each of their inputs and summise them into a single output. ANN's are designed in light of the way human/animal brains process information, via a series of neurons which are connected (in biology these connections are called synapses). Within an ANN each neuron is connected to either input attributes or the output of neruron(s) in another layer of the network. The connections between the neurons contain weightings which is the main principal behind how the network can emphasise some data over others.
+    An Artificial Neural Network is a mathematical system which is able to classify data by performing a series of mathematical functions (activation functions) which take weightings for each of their inputs and summarise them into a single output. ANN's are designed in light of the way human/animal brains process information, via a series of neurons which are connected (in biology these connections are called synapses). Within an ANN each neuron is connected to either input attributes or the output of neuron(s) in another layer of the network. The connections between the neurons contain weightings which is the main principal behind how the network can emphasise some data over others.
 
     The neurons within an ANN can be split up into a series of ‘layers’, where the outputs from one layer of neurons will become the inputs for the next layer of neurons. Within a Multilayer Perceptron (see section \ref{mlp}) the layers consist of 1 input layer, 1 output layer, and at least 1 ‘hidden layer’ where each neuron in the hidden layer(s) and the output layer are neurons which perform an activation function.
 
-    Within an ANN there must be a process of ‘learning’ which enables it to find the most optimal values for the weights which are used in the activation functions. This is done via backpropagation which enables the algorithm to modify the weights based on the error rate of the output, compared to the expected output.
+    Within an ANN there must be a process of ‘learning’ which enables it to find the most optimal values for the weights which are used in the activation functions. This is done via propagation which enables the algorithm to modify the weights based on the error rate of the output, compared to the expected output.
 
     \subsubsection{Multilayer Perceptron parameters} \label{mlp}
     Within this report the Multilayer Perceptron \citep{minsky2017perceptrons} variant of ANN will be used and below are the parameters which will affect classification performance.
 
       \paragraph{Hidden Layers.}
-        The hidden layers parameter allows the user to define the strcuture of the network they would like to train. Introducing more layers \& neurons introduces more complexity which is good for more complex datasets with attributes which are not lineraly seperable, however for simpler datasets this may introduce unwanted complexity within the network. What hidden layers are and how they relate to the ANN is explained in more deatail in section \ref{ann}.
+        The hidden layers parameter allows the user to define the structure of the network they would like to train. Introducing more layers \& neurons introduces more complexity which is good for more complex datasets with attributes which are not linearly separable, however for simpler datasets this may introduce unwanted complexity within the network. What hidden layers are and how they relate to the ANN is explained in more detail in section \ref{ann}.
 
       \paragraph{Learning Rate.}
-        Learning rate applies to the backpropagation algorithm and more specifically the Gradient Descent. It concerns the speed at which the minimum squared error is reached. A low learning rate would mean that many updates (a high training time) would be needed in order to find the global minimum - which is not desirable. If the learning rate is too high however, then this can lead to divergent behaviour where the backpropagation algorithm is not able to correctly settle on an optimal minima.
+        Learning rate applies to the propagation algorithm and more specifically the Gradient Descent. It concerns the speed at which the minimum squared error is reached. A low learning rate would mean that many updates (a high training time) would be needed in order to find the global minimum - which is not desirable. If the learning rate is too high however, then this can lead to divergent behaviour where the propagation algorithm is not able to correctly settle on an optimal minima.
 
       \paragraph{Momentum.}
         Once again momentum relates to the gradient descent for squared error, however momentum defines the way in which the minima is reached. As there may be several local minimas within the descent path, it would not be desirable to end in a minima which is not actually the global minima. In order to avoid this, the momentum value is linked to the learning rate in that increasing the momentum allows the descent path to continue past local minimas in search of a lower squared error.
 
       \paragraph{Training Time.}
-        The main factor in the learning process of an ANN is the amount of time it has to train. There is no point in time which the network will be ‘done’ learning therefore the most optimal amount of learning time must be chosen. Training time is measured in ‘epochs’, where 1 epoch is the completion of a single training iteration. A training iteration includes the inputs passing through every layer, providing an output, and then the backpropagation algorithm updating the weights and biases for each applicable neuron. If the training time is too high, this can lead to something called ‘overtraining’ where the ANN becomes too dependent on the training data and will start giving worse results when presented with unseen testing data. Therefore it is necessary to find the optimal training time, in combination with the optimal learning rate and momentum.
+        The main factor in the learning process of an ANN is the amount of time it has to train. There is no point in time which the network will be ‘done’ learning therefore the most optimal amount of learning time must be chosen. Training time is measured in ‘epochs’, where 1 epoch is the completion of a single training iteration. A training iteration includes the inputs passing through every layer, providing an output, and then the propagation algorithm updating the weights and biases for each applicable neuron. If the training time is too high, this can lead to something called ‘over-training’ where the ANN becomes too dependent on the training data and will start giving worse results when presented with unseen testing data. Therefore it is necessary to find the optimal training time, in combination with the optimal learning rate and momentum.
 
 \section{Data set analysis} \label{data-set-analysis}
   In this section, the mamographical dataset will be analysed as a preparatory step to pre-processing of the data.
@@ -111,7 +111,7 @@
         \end{figure}
 
       \subsubsection{Outliers} \label{birad-outlier}
-        Within the BI-RADS attribute there is at least one major outlier as shown in figure \ref{fig:birads-outlier}. This outlier value is ‘55’ and while it could be guessed that this is due to human error of entering a score of ‘5‘ twice accidentally, this outlier must be replaced by the central tendancy. This outlier plot has been repeated in figure \ref{fig:birads-outilier-no55}, with the outlier replaced with the median so as to get a clearer indication of other outliers.
+        Within the BI-RADS attribute there is at least one major outlier as shown in figure \ref{fig:birads-outlier}. This outlier value is ‘55’ and while it could be guessed that this is due to human error of entering a score of ‘5‘ twice accidentally, this outlier must be replaced by the central tendency. This outlier plot has been repeated in figure \ref{fig:birads-outilier-no55}, with the outlier replaced with the median so as to get a clearer indication of other outliers.
 
         Figure \ref{fig:birads-outilier-no55} shows that there are several instances with BI-RADS scores of both ‘0’ and ‘6’ which do not exist in the scale. These scores do exist in edition 4 of the BI-RADS scale \citep{d2003breast} however the data descriptors provided with the dataset make no mention of these categories or which edition of the BI-RADS scale it refers to.
 
@@ -131,7 +131,7 @@
         \end{figure}
 
       \subsubsection{Predictive}
-        With the BI-RADS score being a predictive scale, this would mean that if the score of BI-RADS was high then the chance of that instance having a melignant severity would be much higher. This can be shown in figure \ref{fig:birads-severity-correlation} where it is shown that there is a slight correlation between a higher BI-RADS score and \% of severity classification.
+        With the BI-RADS score being a predictive scale, this would mean that if the score of BI-RADS was high then the chance of that instance having a malignant severity would be much higher. This can be shown in figure \ref{fig:birads-severity-correlation} where it is shown that there is a slight correlation between a higher BI-RADS score and \% of severity classification.
 
         \begin{figure}[H]
           \centering
@@ -178,7 +178,7 @@
         \end{figure}
 
       \subsubsection{Outliers}
-        There does not appear to be any outliers in the age attribute as shown by figure \ref{fig:age-outlier-plot}. There are, however, 2 missing values within the attribute. The central tendancy for this attribute should be the median due to the fact that the scale type is ratio and that the distribution is non-normal.
+        There does not appear to be any outliers in the age attribute as shown by figure \ref{fig:age-outlier-plot}. There are, however, 2 missing values within the attribute. The central tendency for this attribute should be the median due to the fact that the scale type is ratio and that the distribution is non-normal.
 
         \begin{figure}[H]
           \centering
@@ -239,7 +239,7 @@
         \end{figure}
 
       \subsubsection{Outliers}
-        While there do not appear to be any outliers within this attribute, it does contain 31 missing values. Due to it being nominal the central tendancy for these values should be the mode.
+        While there do not appear to be any outliers within this attribute, it does contain 31 missing values. Due to it being nominal the central tendency for these values should be the mode.
 
       \subsubsection{Predictive}
         In figure \ref{fig:shape-severity-correlation} below it can be seen that while shape is not on an ordinal scale, a higher score of shape is correlated with a higher chance of a malignant severity.
@@ -284,7 +284,7 @@
         \end{figure}
 
       \subsubsection{Outliers}
-        There does not appear to be any outliers within this attribute however it does contain 48 missing values. Due to it again being a nominal value the central tendancy for these values should be the mode.
+        There does not appear to be any outliers within this attribute however it does contain 48 missing values. Due to it again being a nominal value the central tendency for these values should be the mode.
 
       \subsubsection{Predictive}
         Once again, it can be observed in figure \ref{fig:margin-severity-correlation} that a higher score of margin will correlate with a higher chance of a malignant severity.
@@ -326,7 +326,7 @@
         \end{figure}
 
       \subsubsection{Outliers}
-        While there is no outliers within this attribute, there are 76 missing values. The central tendancy for replacing these values should be the median due to the data type being ordinal.
+        While there is no outliers within this attribute, there are 76 missing values. The central tendency for replacing these values should be the median due to the data type being ordinal.
 
       \subsubsection{Predictive}
         Figure \ref{fig:density-severity-correlation} below shows that in contrary to \cite{woods2011mammographic}, the dataset provided does not seem to have a significant correlation between high-density masses and a malignant severity.
@@ -360,7 +360,7 @@
   \subsection{Artificial Neural Network}
     \subsubsection{Strengths}
       \paragraph{Nonlinear interactions.}
-        ANNs are very good at handling abstract relationships in datasets, therefore if there is any information contained in the data which can be inferred, then it is likely that a neural network could make use of this inferrance.
+        ANNs are very good at handling abstract relationships in datasets, therefore if there is any information contained in the data which can be inferred, then it is likely that a neural network could make use of this inference.
 
     \subsubsection{Weaknesses}
       \paragraph{No feature Selection.}
@@ -370,7 +370,7 @@
         ANNs do not provide a systematical view of how a classification is made (it can be done given the proper functions and weight/bias values, however calculating it manually could take a very long time). This is not useful when trying to determine the relationships between different attributes in the data.
 
       \paragraph{Speed.}
-        The time taken for both training and classification are often higher in neural netwoks especially when the complexity of the network structure is increased (i.e. by adding more neurons and/or hidden layers).
+        The time taken for both training and classification are often higher in neural networks especially when the complexity of the network structure is increased (i.e. by adding more neurons and/or hidden layers).
 
   \subsection{Prediction}
     In order to predict the outcome of which classifier is most suited for this task, it must be made clear how the dataset will interact with the classifier.
@@ -380,10 +380,10 @@
   In this section the pre-processing steps for the dataset will be explained and a series of initial experiments prior to pre-processing will be carried out to find the best strategy for classifying data.
 
   \subsection{Missing values}
-    As explained in section \ref{data-set-analysis}, each parameter has its own central tendancy due to their different distributions and data types. The strategy for missing values will be to replace them with the central tendancy for each parameter. As there is only 961 instances within the dataset it would not be benefitial to remove any instances with missing values as the other parameters would then suffer from real data being removed from them.
+    As explained in section \ref{data-set-analysis}, each parameter has its own central tendency due to their different distributions and data types. The strategy for missing values will be to replace them with the central tendency for each parameter. As there is only 961 instances within the dataset it would not be beneficial to remove any instances with missing values as the other parameters would then suffer from real data being removed from them.
 
   \subsection{Outliers}
-    As previously explored in section \ref{birad-outlier}, the main outlier is within the BI-RADS attribute and has been replaced with the central tendancy. Once again if this instance were to be removed (when it is only likely there due to human input error) then the dataset could risk losing valuable data for other parameters in that instance.
+    As previously explored in section \ref{birad-outlier}, the main outlier is within the BI-RADS attribute and has been replaced with the central tendency. Once again if this instance were to be removed (when it is only likely there due to human input error) then the dataset could risk losing valuable data for other parameters in that instance.
 
   \subsection{Results}
     Below are the results from some initial experiments done prior to pre-processing of data (aside from removing the outlier mentioned in section \ref{birad-outlier}).
@@ -640,7 +640,7 @@
 
 \newpage
 \section{Main Experiments}
-  In this section the experiments will be carried out which indicate the best possible classifier for both Decision trees and Artificial Neural Networks. These results will include pre-processing steps including replacing missing values with the central tendancy and replacing nominal values with their text values to ensure they are processed correctly. Throughout all experiments a 10-fold cross-validation train/test set will be used, this will make use of every instance of the data in training and testing which is vital due to the low number of instances in the dataset.
+  In this section the experiments will be carried out which indicate the best possible classifier for both Decision trees and Artificial Neural Networks. These results will include pre-processing steps including replacing missing values with the central tendency and replacing nominal values with their text values to ensure they are processed correctly. Throughout all experiments a 10-fold cross-validation train/test set will be used, this will make use of every instance of the data in training and testing which is vital due to the low number of instances in the dataset.
 
   \subsection{Decision tree}
     As a result of the information presented in section \ref{res-destrees}, a series of experiments will be carried out to find the optimal parameters for training when a J48 decision tree algorithm is used on the mamographical dataset. In this section two trees will be laid out, the first being the tree with the highest classification accuracy and the second being the one which is most pruned but not significantly worse than the highest accuracy tree.
@@ -796,7 +796,7 @@
         \label{tab:dt-minobj}
       \end{table}
 
-      Tables \ref{tab:dt-minobj-prun-a} and \ref{tab:dt-minobj-prun-b} show the process of finding the most pruned tree which is not significantly worse than the tree with the highest classification accuracy which was found in the previous paragraph. Specifically table \ref{tab:dt-minobj-prun-b} shows that the most pruned tree which is not significantly worse is one with 56 minumum number of objects. Again this parameter is an integer scale so there is no way to find smaller intervals.
+      Tables \ref{tab:dt-minobj-prun-a} and \ref{tab:dt-minobj-prun-b} show the process of finding the most pruned tree which is not significantly worse than the tree with the highest classification accuracy which was found in the previous paragraph. Specifically table \ref{tab:dt-minobj-prun-b} shows that the most pruned tree which is not significantly worse is one with 56 minimum number of objects. Again this parameter is an integer scale so there is no way to find smaller intervals.
 
       \begin{table}[H]
         \caption{Finding the most pruned tree}
@@ -859,7 +859,7 @@
       Once the optimal training parameters are found another series of experiments with different combinations of ANN structures will be carried out, which make use of the training parameters found in the previous experiments.
 
     \subsubsection{Execution} \label{ann-ex}
-      Table \ref{tab:ann-lr-a} shows that the best learning rate over the majority of training times is 0.1, and that a training time of 700 epochs is the most optimal time with an accuracy of 82.63\%. Using this as a basis, table \ref{tab:ann-lr-b} shows a wider scope of learning rates where it can be observed that 0.1 is still the most optimal value. Table \ref{tab:ann-lr-c} shows finer intervals around the 0.1 value and again highlights that it is still the best value. Finally, table \ref{tab:ann-lr-d} shows the two neighbor values which still give lower scores than the 0.1 value. Therefore it is proven that 0.1 is the optimal learning rate value.
+      Table \ref{tab:ann-lr-a} shows that the best learning rate over the majority of training times is 0.1, and that a training time of 700 epochs is the most optimal time with an accuracy of 82.63\%. Using this as a basis, table \ref{tab:ann-lr-b} shows a wider scope of learning rates where it can be observed that 0.1 is still the most optimal value. Table \ref{tab:ann-lr-c} shows finer intervals around the 0.1 value and again highlights that it is still the best value. Finally, table \ref{tab:ann-lr-d} shows the two neighbour values which still give lower scores than the 0.1 value. Therefore it is proven that 0.1 is the optimal learning rate value.
 
       \singlespacing
       \begin{table}[H]
