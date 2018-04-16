@@ -97,6 +97,9 @@ In this report a process will be laid out which removes redundant parameters fro
   \subsection{Co-occurrence matrices}
     In addition to shape information, textural information is also very useful to classification. Grey Level Co-occurrence Matrices is a form of textural co-occurrence analysis proposed by \cite{haralick1973textural}. It provides a textural mapping of pixel intensities throughout a gray image by comparing values at a given offest, up to a given pixel depth. In this report a horizontally neighboring offset will be used with a pixel-depth value of 8.
 
+  \subsection{Principal component analysis} \label{pca}
+    Finally, principal component analysis \citep{pearson1901liii} will be used to reduce as much dimensionality in the output as possible. This will reduce the number of parameters by creating a statistical model of all training images \& creating a mean image for which every test image will be transformed into its variance from this mean model using only its principal distinguishing components. In comparison to direct pixel data this method will shrink the number of parameters immensely.
+
 \section{Data classifiers} \label{classifiers}
   In the experimental stages of this report, three different classifiers will be tested for their suitability in classifying handwritten digits. The classifiers to be used will be the NaiveBayes, J48 and MultilayerPerceptron which are all implemented in WEKA \citep{hall2009weka}. An initial test will be done with all three, then one will be chosen on the basis of which gave the highest classification accuracy. Finally, the parameters for the chosen classifier will be optimised via a series of experiments to ensure the highest classification accuracy.
 
@@ -390,12 +393,20 @@ In this report a process will be laid out which removes redundant parameters fro
     \end{table}%
 
 \section{Conclusions}
-% pca, 4/non-4
-• A description of the best\\
-(a) image processing,\\
-(b) encoding and\\
-(c) classification methods.\\
-• Short analysis or discussion of results, containing your recommendations.
+  In conclusion, the best method defined in this report for classifying handwritten ‘4’ digits involves multiple image processing and encoding methods, and a classifier which is best suited for lots of parameters with highly varying values. Below the best methods discovered in this report will be laid out.
+
+  \subsection{Image processing methods} \label{improc}
+    The best image processing method found seems to be a combination of three different processes. The first is increasing resolution of the image to 60x60 pixels (just over 4 times the number of pixels from 28x28). The next step seems to be smoothing this scaled image using a gaussian kernel size of 2 (see table \ref{tab:blur2}). Finally, thresholding the image to produce a binary version of the shape seems to be much better than when just a shape as edges is used (see table \ref{tab:edges-only}).
+
+  \subsection{Image encoding methods} \label{imenc}
+    The best image encoding methods described in this report are the chain code and co-occurrence matrices. Both of these perform well in increasing discriminative power between the digits, as seen in table \ref{tab:no-encoding}. Furthermore using PCA \ref{pca} reduces the output size of the processing steps greatly and decreases the time taken for classification.
+
+  \subsection{Classification methods} \label{imcls}
+    By far the best classifier in this task is the MultilayerPerceptron. Due to its capability of having a large structure which deals well with many parameters with abstract connections between the parameters. In this case the hidden layer structure was left at default settings which is the number of parameters $+$ the number of classes in a single hidden layer.
+
+  \subsection{Discussion}
+    The results found in this paper explore a few different ways of reducing dimensionality \& improving discriminative power between digits. What this report does not achieve is a comprehensive comparison of a wide range of many image processing \& encoding methods and their various combinations. This would be beyond the scope of this report however many other techniques exist which could be beneficial in the task of recognising digits. Some examples of other methods include wavelet representation \citep{mallat1989theory}, ‘moments’ which describe the shape's layout \citep{hu1962visual}, or many others described by \cite{zhang2004review}.\\
+    The recommendation by this report is the combination of image processing, encoding and classification techniques described in sections \ref{improc}, \ref{imenc} \& \ref{imcls} respectively for use in reducing dimensionality and increasing discriminative power when classifying between handwritten ‘4’ digits and all others.
 
 \newpage
 
