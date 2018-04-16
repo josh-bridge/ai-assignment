@@ -4,7 +4,7 @@ function outparams = nc_processImage(inimage,nparam)
 % I might suggest..
 
 % c) increase the resolution (nc_scaleImage)
-scaled = nc_scaleImage(40,40,inimage);
+scaled = nc_scaleImage(60,60,inimage);
 
 % a) perhaps blur the image with a Guassian (see lab 9)
 blurred = ip_conv2(scaled,ip_gauss(2));
@@ -16,13 +16,14 @@ ohtsu = nc_ohtsuThres(int8(blurred * 255));
 % e) use a chain code to describe the size and compactness of the digit (see lab 11)
 % f) use CCA to count the number of loops (see lab 11)
 regions = nc_parameterRegions(ohtsu);
-% only use the first shape found by CCA (the others are rarely meaningful)
-% also normalize values by dividing by number of pixels in scaled image
+
+% normalize values by dividing by number of pixels in scaled image
 npixels = size(scaled,1) * size(scaled,2);
 regions(1,1) = regions(1,1) / npixels;
 regions(1,2) = regions(1,2) / npixels;
 regions(1,3) = regions(1,3) / npixels;
 
+% only use the first shape found by CCA (the others are rarely meaningful)
 regions = reshape(regions(1), size(regions(1), 1) * size(regions(1), 2), 1);
 
 % g) use co-occurence matrices to describe the texture (see lab 12)
